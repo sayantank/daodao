@@ -6,7 +6,6 @@ import { SolanaProvider } from "@contexts/SolanaContext";
 // Use require instead of import since order matters
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
-require("react-toastify/dist/ReactToastify.css");
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactNode) => React.ReactNode;
