@@ -1,0 +1,26 @@
+[
+  {
+    "symbol": "SERUM",
+    "name": "Serum DAO",
+    "programId": "AVoAYTs36yB5izAaBkxRG67wL1AMwG3vo41hKtUSb8is",
+    "realmId": "3MMDxjv1SzEFQDKryT7csAvaydYtrgMAc3L9xL9CVLCg",
+    "website": "https://www.projectserum.com/",
+    "ogImage": "https://assets.website-files.com/61284dcff241c2f0729af9f3/61285237ce2e301255d09108_logo-serum.png"
+  },
+  {
+    "symbol": "MNGO",
+    "name": "Mango DAO",
+    "programId": "GqTPL6qRf5aUuqscLh8Rg2HTxPUXfhhAXDptTLhp1t2J",
+    "realmId": "DPiH3H3c7t47BMxqTxLsuPQpEC6Kne8GA9VXbxpnZxFE",
+    "website": "https://mango.markets",
+    "ogImage": "https://trade.mango.markets/assets/icons/logo.svg"
+  },
+  {
+    "symbol": "PSY",
+    "name": "Psy Finance",
+    "programId": "GovHgfDPyQ1GwazJTDY2avSVY8GGcpmCapmmCsymRaGe",
+    "realmId": "FiG6YoqWnVzUmxFNukcRVXZC51HvLr6mts8nxcm7ScR8",
+    "website": "https://psyoptions.io",
+    "ogImage": "https://trade.mango.markets/assets/icons/logo.svg"
+  }
+]

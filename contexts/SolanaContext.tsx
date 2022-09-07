@@ -15,7 +15,7 @@ import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
 
 export type ClusterType = "mainnet-beta" | "testnet" | "devnet" | "custom";
 
-type SolanaCluster = {
+export type SolanaCluster = {
   label: string;
   network: ClusterType;
   endpoint: string;

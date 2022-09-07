@@ -1,8 +1,15 @@
-import { ReactNode } from "react";
-import { getRegularLayout } from "../layouts/RegularLayout";
+import { ReactNode, useEffect } from "react";
+import { getRegularLayout } from "@layouts/RegularLayout";
+import { useRouter } from "next/router";
 
 const Home = () => {
-  return <div>hello</div>;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/app");
+  }, [router]);
+
+  return <div></div>;
 };
 
 Home.getLayout = (page: ReactNode) => getRegularLayout(page, "Home");

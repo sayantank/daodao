@@ -19,6 +19,8 @@
       "@layouts/*": ["layouts/*"],
       "@contexts/*": ["contexts/*"],
       "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@lib": ["lib"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
