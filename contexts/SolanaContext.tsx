@@ -35,7 +35,7 @@ type SolanaProviderProps = {
 
 export const SolanaContext = createContext<SolanaContextType | null>(null);
 
-export const CLUSTER_LOCAL_STORAGE_KEY = "cluster-serum-explorer";
+export const CLUSTER_LOCAL_STORAGE_KEY = "cluster-dao-dao";
 
 export const LOCALNET_URL = "http://localhost:8899";
 
