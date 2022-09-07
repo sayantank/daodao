@@ -1,15 +1,13 @@
-import {
-  ProgramAccount,
-  Realm as SPLRealm,
-  getRealm,
-} from "@solana/spl-governance";
+import { ProgramAccount, Realm, getRealm } from "@solana/spl-governance";
 import { Connection, PublicKey } from "@solana/web3.js";
+import { arePubkeysEqual } from "@utils/general";
+import { LibError } from "./errors";
 
-export class Realm {
+export class BasicRealm {
   private _programId: PublicKey;
-  private _account: ProgramAccount<SPLRealm>;
+  private _account: ProgramAccount<Realm>;
 
-  constructor(programId: PublicKey, account: ProgramAccount<SPLRealm>) {
+  constructor(programId: PublicKey, account: ProgramAccount<Realm>) {
     this._programId = programId;
     this._account = account;
   }
@@ -18,7 +16,7 @@ export class Realm {
     return this._programId;
   }
 
-  public get account(): ProgramAccount<SPLRealm> {
+  public get account(): ProgramAccount<Realm> {
     return this._account;
   }
 
@@ -26,8 +24,18 @@ export class Realm {
     connection: Connection,
     realmId: PublicKey,
     programId: PublicKey
-  ): Promise<Realm> {
+  ): Promise<BasicRealm> {
     const realmAccount = await getRealm(connection, realmId);
-    return new Realm(programId, realmAccount);
+
+    if (!arePubkeysEqual(realmAccount.owner, programId))
+      throw new LibError(
+        `programId: ${programId
+          .toBase58()
+          .slice(0, 6)}... does not own realmId: ${realmId
+          .toBase58()
+          .slice(0, 6)}...`
+      );
+
+    return new BasicRealm(programId, realmAccount);
   }
 }

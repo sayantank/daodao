@@ -6,7 +6,7 @@ type SiteLayoutProps = {
   children: ReactNode;
 };
 
-export const RegularLayout: FC<SiteLayoutProps> = ({
+const RegularLayout: FC<SiteLayoutProps> = ({
   title,
   children,
 }: SiteLayoutProps) => {

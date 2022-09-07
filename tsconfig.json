@@ -20,6 +20,7 @@
       "@contexts/*": ["contexts/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"],
       "@lib": ["lib"],
     }
   },
