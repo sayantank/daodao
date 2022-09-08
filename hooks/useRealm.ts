@@ -4,12 +4,13 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
 import { BasicRealm } from "@lib";
 import { useAppContext } from "@contexts/AppContext";
+import { IRealm } from "lib/interfaces";
 
 const fetchRealm = async (
   connection: Connection,
   realmId: PublicKey,
   programId: PublicKey
-) => {
+): Promise<IRealm> => {
   return BasicRealm.load(connection, realmId, programId);
 };
 

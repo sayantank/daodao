@@ -22,7 +22,9 @@ export function AppLayout({ children }: AppLayoutProps) {
       <AppProvider realms={realms}>
         <div className="relative flex min-h-full flex-col">
           <AppNav />
-          {children}
+          <div className="mx-auto w-full max-w-7xl p-2 sm:p-4 lg:p-8 ">
+            {children}
+          </div>
         </div>
       </AppProvider>
     </>

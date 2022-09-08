@@ -43,7 +43,9 @@ const AppNav = () => {
               {/* Logo section */}
               <div className="flex items-center px-2 lg:px-0 xl:w-64">
                 <div className="flex-shrink-0">
-                  <h1 className="text-lg font-bold text-white">DAO.DAO</h1>
+                  <h1 className="text-xl font-semibold text-slate-300">
+                    DAO.DAO
+                  </h1>
                 </div>
               </div>
 
@@ -87,9 +89,9 @@ const AppNav = () => {
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-4 flex-shrink-0">
                     <div>
-                      <Menu.Button className="flex px-3 py-2 rounded-lg bg-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-700">
+                      <Menu.Button className="flex px-3 py-1 rounded-lg bg-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-700">
                         <span className="sr-only">Wallet Button</span>
-                        <p className="font-semibold">
+                        <p className="text-lg font-medium text-slate-300">
                           {!connected
                             ? "Connect"
                             : `${publicKey?.toBase58().slice(0, 6)}...`}
@@ -117,7 +119,7 @@ const AppNav = () => {
                                       active
                                         ? "bg-slate-700 text-slate-300"
                                         : "text-slate-400",
-                                      "group flex items-center space-x-2  px-4 py-2 text-sm w-full"
+                                      "group flex items-center space-x-2  px-4 py-2 w-full"
                                     )}
                                   >
                                     <div className="h-6 w-6 rounded-full">
@@ -144,7 +146,7 @@ const AppNav = () => {
                                     active
                                       ? "bg-slate-700 text-slate-300"
                                       : "text-slate-400",
-                                    "group flex items-center space-x-2  px-4 py-2 text-sm w-full"
+                                    "group flex items-center space-x-2  px-4 py-2 w-full"
                                   )}
                                 >
                                   Disconnect
@@ -159,9 +161,7 @@ const AppNav = () => {
                               enabled={isDevnet(cluster)}
                               onChange={handleDevnetToggle}
                             >
-                              <span className="text-sm text-slate-400">
-                                Devnet
-                              </span>
+                              <span className="text-slate-400">Devnet</span>
                             </SwitchRightLabel>
                           </div>
                         </div>
@@ -176,7 +176,7 @@ const AppNav = () => {
           {/* TODO: Change to Menu (Dropdown) and add Devnet toggle*/}
           <Disclosure.Panel className="lg:hidden">
             {connected ? (
-              <div className="px-3 pt-2 pb-3 border-b border-slate-800 text-white">
+              <div className="px-3 pt-2 pb-3 border-b border-slate-800 text-slate-300">
                 <p className="text-sm font-light">Connected to</p>
                 <p className="font-semibold">
                   {publicKey?.toBase58().slice(0, 12)}...

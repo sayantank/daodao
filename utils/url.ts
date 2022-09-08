@@ -6,7 +6,7 @@ export const getRealmUrlFromMeta = (
   cluster: SolanaCluster
 ) => {
   return `/app/${realm.symbol}${
-    cluster.network !== "mainnet-beta" && `?network=${cluster.network}`
+    cluster.network !== "mainnet-beta" ? `?network=${cluster.network}` : ""
   }`;
 };
 

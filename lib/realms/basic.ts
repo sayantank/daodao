@@ -1,9 +1,11 @@
 import { ProgramAccount, Realm, getRealm } from "@solana/spl-governance";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { arePubkeysEqual } from "@utils/pubkey";
+import BN from "bn.js";
+import { IRealm } from "lib/interfaces";
 import { LibError } from "../errors";
 
-export class BasicRealm {
+export class BasicRealm implements IRealm {
   private _programId: PublicKey;
   private _account: ProgramAccount<Realm>;
 
@@ -37,5 +39,9 @@ export class BasicRealm {
       );
 
     return new BasicRealm(programId, realmAccount);
+  }
+
+  public async depositGoverningTokens(amount: BN): Promise<string> {
+    return amount.toString();
   }
 }
