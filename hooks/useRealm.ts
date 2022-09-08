@@ -1,9 +1,9 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
-import { useClusterRealms } from "./useClusterRealms";
 import { useConnection } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
 import { BasicRealm } from "@lib";
+import { useAppContext } from "@contexts/AppContext";
 
 const fetchRealm = async (
   connection: Connection,
@@ -18,7 +18,7 @@ const fetchRealm = async (
  */
 export const useRealm = (realmQuery: string) => {
   const { connection } = useConnection();
-  const { realms } = useClusterRealms();
+  const { realms } = useAppContext();
 
   const [programId, setProgramId] = useState<PublicKey | null>(null);
   const [realmId, setRealmId] = useState<PublicKey | null>(null);

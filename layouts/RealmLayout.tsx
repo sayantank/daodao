@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
-import AppNav from "@components/common/AppNav";
 import { RealmProvider } from "@contexts/RealmContext";
 import { useRealm } from "@hooks/useRealm";
+import { AppLayout } from "./AppLayout";
 
 type RealmLayoutProps = {
   children: React.ReactNode;
@@ -22,19 +21,13 @@ function RealmLayout({ children }: RealmLayoutProps) {
 
   return (
     <>
-      <Head>
-        <title>DAO.DAO</title>
-      </Head>
-      <RealmProvider realm={realm}>
-        <div className="relative flex min-h-full flex-col">
-          <AppNav />
-          {children}
-        </div>
-      </RealmProvider>
+      <RealmProvider realm={realm}>{children}</RealmProvider>
     </>
   );
 }
 
 export const getRealmLayout = (page: React.ReactNode) => (
-  <RealmLayout>{page}</RealmLayout>
+  <AppLayout>
+    <RealmLayout>{page}</RealmLayout>
+  </AppLayout>
 );

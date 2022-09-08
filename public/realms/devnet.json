@@ -1,0 +1,26 @@
+[
+  {
+    "symbol": "DAO-1",
+    "name": "DAO-1",
+    "programId": "GTesTBiEWE32WHXXE2S4XbZvA5CrEc4xs6ZgRe895dP",
+    "realmId": "C2E8coHoNGEb1veDmWAH14xdKfzdf3BenMnKSfucUAy1",
+    "ogImage": "https://assets.website-files.com/61284dcff241c2f0729af9f3/61285237ce2e301255d09108_logo-serum.png",
+    "website": ""
+  },
+  {
+    "symbol": "DAO-2",
+    "name": "DAO-2",
+    "programId": "GTesTBiEWE32WHXXE2S4XbZvA5CrEc4xs6ZgRe895dP",
+    "realmId": "G1ZnwPJGnRt35nadw33df7hxKHkVu13juMjuE4Pp5FWN",
+    "ogImage": "https://assets.website-files.com/61284dcff241c2f0729af9f3/61285237ce2e301255d09108_logo-serum.png",
+    "website": ""
+  },
+  {
+    "symbol": "SERUM",
+    "name": "Serum Test DAO",
+    "programId": "GTesTBiEWE32WHXXE2S4XbZvA5CrEc4xs6ZgRe895dP",
+    "realmId": "728SK7AjrcQXhBrGnkR8kA3wJrzff7jgDxa2ugcaXHq3",
+    "ogImage": "https://assets.website-files.com/61284dcff241c2f0729af9f3/61285237ce2e301255d09108_logo-serum.png",
+    "website": ""
+  }
+]

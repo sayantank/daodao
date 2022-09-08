@@ -1,18 +1,24 @@
 import { ReactNode } from "react";
-import { getRegularLayout } from "@layouts/RegularLayout";
-import { useClusterRealms } from "@hooks/useClusterRealms";
+import { getAppLayout } from "@layouts/AppLayout";
+import Link from "next/link";
+import { useAppContext } from "@contexts/AppContext";
+import { getRealmUrlFromMeta } from "@utils/url";
+import { useSolana } from "@contexts/SolanaContext";
 
 export default function App() {
-  const { realms, isLoading, error } = useClusterRealms();
-
-  if (isLoading) return <div>Loading...</div>;
-
-  if (error || !realms) return <div>Error</div>;
+  const { cluster } = useSolana();
+  const { realms } = useAppContext();
 
   return (
     <div>
       {realms && realms.length > 0 ? (
-        realms.map((realm) => <div key={realm.name}>{realm.name}</div>)
+        realms.map((realm) => (
+          <Link key={realm.name} href={getRealmUrlFromMeta(realm, cluster)}>
+            <a>
+              <div className="block text-white">{realm.name}</div>
+            </a>
+          </Link>
+        ))
       ) : (
         <div>No realms found</div>
       )}
@@ -20,4 +26,4 @@ export default function App() {
   );
 }
 
-App.getLayout = (page: ReactNode) => getRegularLayout(page);
+App.getLayout = (page: ReactNode) => getAppLayout(page);

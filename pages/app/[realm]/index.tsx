@@ -14,6 +14,10 @@ export default function RealmScreen() {
   );
 
   useEffect(() => {
+    console.log("realm: ", realm);
+  }, [realm]);
+
+  useEffect(() => {
     console.log("tokenOwnerRecord: ", tokenOwnerRecord);
   }, [tokenOwnerRecord]);
 

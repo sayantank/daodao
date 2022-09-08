@@ -1,11 +1,13 @@
 import { SolanaCluster, useSolana } from "@contexts/SolanaContext";
-import { getMainnetRealms } from "db/mainnet";
+import { getDevnetRealms, getMainnetRealms } from "db/realms";
 import useSWR from "swr";
 
 const fetcher = async (cluster: SolanaCluster) => {
   switch (cluster.network) {
     case "mainnet-beta":
       return getMainnetRealms();
+    case "devnet":
+      return getDevnetRealms();
     default:
       throw new Error("Cluster not supported.");
   }

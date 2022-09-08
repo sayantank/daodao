@@ -5,12 +5,21 @@ import { classNames } from "@utils/classNames";
 import { Wallet, useWallet } from "@solana/wallet-adapter-react";
 import { WalletReadyState } from "@solana/wallet-adapter-base";
 import Image from "next/image";
+import { CLUSTERS, useSolana } from "@contexts/SolanaContext";
+import SwitchRightLabel from "./SwitchRightLabel";
+import { isDevnet } from "@utils/url";
 
 const AppNav = () => {
+  const { cluster, setCluster } = useSolana();
   const { wallets, select, connected, disconnect, publicKey } = useWallet();
 
   const [connectableWallets, setConnectableWallets] =
     useState<Wallet[]>(wallets);
+
+  const handleDevnetToggle = () => {
+    if (isDevnet(cluster)) setCluster(CLUSTERS[0]);
+    else setCluster(CLUSTERS[2]);
+  };
 
   useEffect(() => {
     setConnectableWallets(
@@ -96,13 +105,41 @@ const AppNav = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {!connected &&
-                          connectableWallets.map((w) => (
-                            <Menu.Item key={w.adapter.name}>
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right divide-y divide-slate-700 rounded-md bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div>
+                          {!connected &&
+                            connectableWallets.map((w) => (
+                              <Menu.Item key={w.adapter.name}>
+                                {({ active }) => (
+                                  <button
+                                    onClick={() => select(w.adapter.name)}
+                                    className={classNames(
+                                      active
+                                        ? "bg-slate-700 text-slate-300"
+                                        : "text-slate-400",
+                                      "group flex items-center space-x-2  px-4 py-2 text-sm w-full"
+                                    )}
+                                  >
+                                    <div className="h-6 w-6 rounded-full">
+                                      <Image
+                                        unoptimized
+                                        src={w.adapter.icon}
+                                        width={1}
+                                        height={1}
+                                        layout="responsive"
+                                        alt={w.adapter.name}
+                                      />
+                                    </div>
+                                    <p>{w.adapter.name}</p>
+                                  </button>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          {connected && (
+                            <Menu.Item>
                               {({ active }) => (
                                 <button
-                                  onClick={() => select(w.adapter.name)}
+                                  onClick={() => disconnect()}
                                   className={classNames(
                                     active
                                       ? "bg-slate-700 text-slate-300"
@@ -110,38 +147,24 @@ const AppNav = () => {
                                     "group flex items-center space-x-2  px-4 py-2 text-sm w-full"
                                   )}
                                 >
-                                  <div className="h-6 w-6 rounded-full">
-                                    <Image
-                                      unoptimized
-                                      src={w.adapter.icon}
-                                      width={1}
-                                      height={1}
-                                      layout="responsive"
-                                      alt={w.adapter.name}
-                                    />
-                                  </div>
-                                  <p>{w.adapter.name}</p>
+                                  Disconnect
                                 </button>
                               )}
                             </Menu.Item>
-                          ))}
-                        {connected && (
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={() => disconnect()}
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "group flex items-center space-x-2  px-4 py-2 text-sm w-full"
-                                )}
-                              >
-                                Disconnect
-                              </button>
-                            )}
-                          </Menu.Item>
-                        )}
+                          )}
+                        </div>
+                        <div>
+                          <div className="px-4 py-2">
+                            <SwitchRightLabel
+                              enabled={isDevnet(cluster)}
+                              onChange={handleDevnetToggle}
+                            >
+                              <span className="text-sm text-slate-400">
+                                Devnet
+                              </span>
+                            </SwitchRightLabel>
+                          </div>
+                        </div>
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -150,6 +173,7 @@ const AppNav = () => {
             </div>
           </div>
 
+          {/* TODO: Change to Menu (Dropdown) and add Devnet toggle*/}
           <Disclosure.Panel className="lg:hidden">
             {connected ? (
               <div className="px-3 pt-2 pb-3 border-b border-slate-800 text-white">
