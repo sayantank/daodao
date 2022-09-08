@@ -6,7 +6,7 @@ export default function RealmScreen() {
   const { realm } = useRealmContext();
   return (
     <div>
-      <div>{JSON.stringify(realm)}</div>
+      <div>realm</div>
     </div>
   );
 }

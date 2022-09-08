@@ -1,3 +1,3 @@
-export { BasicRealm } from "./realm";
+export { BasicRealm } from "./realms";
 export * from "./types";
 export * from "./errors";

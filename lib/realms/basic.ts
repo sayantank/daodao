@@ -1,7 +1,7 @@
 import { ProgramAccount, Realm, getRealm } from "@solana/spl-governance";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { arePubkeysEqual } from "@utils/general";
-import { LibError } from "./errors";
+import { arePubkeysEqual } from "@utils/pubkey";
+import { LibError } from "../errors";
 
 export class BasicRealm {
   private _programId: PublicKey;
