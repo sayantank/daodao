@@ -44,7 +44,11 @@ export const useRealm = (realmQuery: string) => {
     async function loadIds() {
       if (realms) {
         // Finding realm from db
-        const realm = realms.find((realm) => realm.symbol === realmQuery);
+        const realm = realms.find(
+          (realm) =>
+            realm.symbol === realmQuery ||
+            realm.realmId.toBase58() === realmQuery
+        );
 
         if (!realm) {
           // If realm not found, try to parse realmQuery as a pubkey and set account owner as programId

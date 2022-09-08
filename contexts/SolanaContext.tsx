@@ -11,7 +11,14 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { useRouter } from "next/router";
-import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 export type ClusterType = "mainnet-beta" | "testnet" | "devnet" | "custom";
 
@@ -163,4 +170,13 @@ export const SolanaProvider = ({ children }: SolanaProviderProps) => {
       </WalletProvider>
     </ConnectionProvider>
   );
+};
+
+export const useSolana = () => {
+  const solana = useContext(SolanaContext);
+
+  if (!solana)
+    throw new Error("Make sure you wrap your component with SolanaProvider");
+
+  return solana;
 };

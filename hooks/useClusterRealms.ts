@@ -1,7 +1,6 @@
-import { SolanaCluster } from "@contexts/SolanaContext";
+import { SolanaCluster, useSolana } from "@contexts/SolanaContext";
 import { getMainnetRealms } from "db/mainnet";
 import useSWR from "swr";
-import { useSolana } from "./useSolana";
 
 const fetcher = async (cluster: SolanaCluster) => {
   switch (cluster.network) {
