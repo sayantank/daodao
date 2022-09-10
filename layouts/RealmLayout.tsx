@@ -17,7 +17,7 @@ function RealmLayout({ children }: RealmLayoutProps) {
   if (isLoading) return <div>Loading...</div>;
 
   // TODO: Handle Error stat, can redirect to 404 or home
-  if (error) return <div>Error</div>;
+  if (error) return <div>{JSON.stringify(error)}</div>;
 
   return (
     <>

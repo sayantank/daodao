@@ -10,9 +10,10 @@ import { SWRHookReturnType } from "@utils/types";
 const fetchRealm = async (
   connection: Connection,
   realmId: PublicKey,
-  programId: PublicKey
+  programId: PublicKey,
+  imageUrl?: string
 ): Promise<IRealm> => {
-  return BasicRealm.load(connection, realmId, programId);
+  return BasicRealm.load(connection, realmId, programId, imageUrl);
 };
 
 /**
@@ -24,6 +25,7 @@ export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
 
   const [programId, setProgramId] = useState<PublicKey | null>(null);
   const [realmId, setRealmId] = useState<PublicKey | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 
   const {
     data: realm,
@@ -31,12 +33,19 @@ export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
     mutate,
     isValidating,
   } = useSWR(
-    () => realmId && [connection, realmId, programId, "realm"],
-    fetchRealm
+    () =>
+      realmId &&
+      programId && [connection, realmId, programId, imageUrl, "realm"],
+    fetchRealm,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+    }
   );
 
   // https://stackoverflow.com/questions/61751728/asynchronous-calls-with-react-usememo
   useEffect(() => {
+    console.log("useRealm");
     let active = true;
     loadIds();
     return () => {
@@ -64,15 +73,18 @@ export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
               if (account) {
                 setRealmId(id);
                 setProgramId(account.owner);
+                setImageUrl(undefined);
               } else {
                 setRealmId(null);
                 setProgramId(null);
+                setImageUrl(undefined);
               }
             }
           } catch (e) {
             if (active) {
               setRealmId(null);
               setProgramId(null);
+              setImageUrl(undefined);
             }
           }
         }
@@ -80,6 +92,7 @@ export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
         else {
           setRealmId(realm.realmId);
           setProgramId(realm.programId);
+          setImageUrl(realm.ogImage);
         }
       }
     }

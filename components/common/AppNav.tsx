@@ -8,6 +8,7 @@ import Image from "next/image";
 import { CLUSTERS, useSolana } from "@contexts/SolanaContext";
 import SwitchRightLabel from "./SwitchRightLabel";
 import { isDevnet } from "@utils/url";
+import Link from "next/link";
 
 const AppNav = () => {
   const { cluster, setCluster } = useSolana();
@@ -43,9 +44,19 @@ const AppNav = () => {
               {/* Logo section */}
               <div className="flex items-center px-2 lg:px-0 xl:w-64">
                 <div className="flex-shrink-0">
-                  <h1 className="text-xl font-semibold text-slate-300">
-                    DAO.DAO
-                  </h1>
+                  <Link
+                    href={`/app${
+                      cluster.network !== "mainnet-beta"
+                        ? `?network=${cluster.network}`
+                        : ""
+                    }`}
+                  >
+                    <a>
+                      <h1 className="text-xl font-semibold text-slate-300">
+                        DAO.DAO
+                      </h1>
+                    </a>
+                  </Link>
                 </div>
               </div>
 

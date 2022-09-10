@@ -20,7 +20,11 @@ export const useClusterRealms = (): SWRHookReturnType<RealmMeta[]> => {
 
   const { data, error, mutate, isValidating } = useSWR(
     () => [cluster, "realms"],
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+    }
   );
 
   return {

@@ -1,36 +1,11 @@
-import { useRealmContext } from "@contexts/RealmContext";
-import { useAtaBalance } from "@hooks/useAtaBalance";
-import { useTokenOwnerRecord } from "@hooks/useTokenOwnerRecord";
 import { getRealmLayout } from "@layouts/RealmLayout";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
+import RealmHeader from "@components/app/realm/RealmHeader";
 
 export default function RealmScreen() {
-  const wallet = useWallet();
-
-  const { realm } = useRealmContext();
-  const { data: tokenOwnerRecord } = useTokenOwnerRecord(
-    realm,
-    realm.account.account.communityMint,
-    wallet.publicKey
-  );
-  const { data: communityBalance } = useAtaBalance(
-    wallet.publicKey,
-    realm.account.account.communityMint
-  );
-
-  useEffect(() => {
-    console.log("realm: ", realm);
-  }, [realm]);
-
-  useEffect(() => {
-    console.log("tokenOwnerRecord: ", tokenOwnerRecord);
-  }, [tokenOwnerRecord]);
-
   return (
     <div>
-      {realm.account.account.name}
-      <div className="text-white">{communityBalance?.uiAmount || 0}</div>
+      <RealmHeader />
     </div>
   );
 }

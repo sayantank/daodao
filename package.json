@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.0",
     "@heroicons/react": "^2.0.10",
+    "@metaplex-foundation/js": "^0.15.0",
     "@solana-mobile/wallet-adapter-mobile": "^0.9.1",
     "@solana/spl-governance": "^0.3.13",
     "@solana/spl-token": "^0.3.4",

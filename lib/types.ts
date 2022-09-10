@@ -8,3 +8,11 @@ export type RealmMeta = {
   website: string;
   ogImage: string;
 };
+
+export type MintMeta = {
+  address: PublicKey;
+  mintAuthority: PublicKey | null;
+  freezeAuthority: PublicKey | null;
+  name?: string;
+  symbol?: string;
+};

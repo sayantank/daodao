@@ -11,3 +11,7 @@ export function tryParseKey(key: string): PublicKey | undefined {
 export function arePubkeysEqual(a: PublicKey, b: PublicKey): boolean {
   return a.toBase58() === b.toBase58();
 }
+
+export function prettifyPubkey(key: PublicKey, length = 6) {
+  return `${key.toBase58().slice(0, length)}...`;
+}

@@ -42,7 +42,8 @@ export const useTokenOwnerRecord = (
     () =>
       tokenMint &&
       owner && [connection, realm, tokenMint, owner, "token-owner-record"],
-    fetchTokenOwnerRecord
+    fetchTokenOwnerRecord,
+    { revalidateIfStale: false }
   );
 
   return {
