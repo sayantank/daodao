@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { BasicRealm } from "@lib";
 import { useAppContext } from "@contexts/AppContext";
 import { IRealm } from "lib/interfaces";
+import { SWRHookReturnType } from "@utils/types";
 
 const fetchRealm = async (
   connection: Connection,
@@ -17,7 +18,7 @@ const fetchRealm = async (
 /**
  * @param realmQuery A symbol or pubkey representing the realm to be used.
  */
-export const useRealm = (realmQuery: string) => {
+export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
   const { connection } = useConnection();
   const { realms } = useAppContext();
 
@@ -85,7 +86,7 @@ export const useRealm = (realmQuery: string) => {
   }, [connection, realmQuery, realms]);
 
   return {
-    realm,
+    data: realm,
     isLoading: !error && !realm,
     error,
     mutate,

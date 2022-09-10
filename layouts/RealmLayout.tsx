@@ -11,7 +11,7 @@ function RealmLayout({ children }: RealmLayoutProps) {
   const router = useRouter();
   const { realm: realmQuery } = router.query;
 
-  const { realm, error, isLoading } = useRealm(realmQuery as string);
+  const { data: realm, error, isLoading } = useRealm(realmQuery as string);
 
   // TODO: Handle Loading state
   if (isLoading) return <div>Loading...</div>;

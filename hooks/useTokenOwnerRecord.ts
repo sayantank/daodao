@@ -1,10 +1,14 @@
 import { BasicRealm } from "@lib";
 import {
+  ProgramAccount,
+  TokenOwnerRecord,
   getTokenOwnerRecord,
   getTokenOwnerRecordAddress,
 } from "@solana/spl-governance";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey } from "@solana/web3.js";
+import { SWRHookReturnType } from "@utils/types";
+import { IRealm } from "lib/interfaces";
 import useSWR from "swr";
 
 const fetchTokenOwnerRecord = async (
@@ -23,10 +27,10 @@ const fetchTokenOwnerRecord = async (
 };
 
 export const useTokenOwnerRecord = (
-  realm: BasicRealm,
+  realm: IRealm,
   tokenMint?: PublicKey,
   owner?: PublicKey | null
-) => {
+): SWRHookReturnType<ProgramAccount<TokenOwnerRecord>> => {
   const { connection } = useConnection();
 
   const {
@@ -42,7 +46,7 @@ export const useTokenOwnerRecord = (
   );
 
   return {
-    tokenOwnerRecord,
+    data: tokenOwnerRecord,
     error,
     mutate,
     isValidating,

@@ -9,12 +9,12 @@ export default function RealmScreen() {
   const wallet = useWallet();
 
   const { realm } = useRealmContext();
-  const { tokenOwnerRecord } = useTokenOwnerRecord(
+  const { data: tokenOwnerRecord } = useTokenOwnerRecord(
     realm,
     realm.account.account.communityMint,
     wallet.publicKey
   );
-  const { balance: communityBalance } = useAtaBalance(
+  const { data: communityBalance } = useAtaBalance(
     wallet.publicKey,
     realm.account.account.communityMint
   );
@@ -29,6 +29,7 @@ export default function RealmScreen() {
 
   return (
     <div>
+      {realm.account.account.name}
       <div className="text-white">{communityBalance?.uiAmount || 0}</div>
     </div>
   );

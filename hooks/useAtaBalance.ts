@@ -1,6 +1,7 @@
 import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey, TokenAmount } from "@solana/web3.js";
+import { SWRHookReturnType } from "@utils/types";
 import useSWR from "swr";
 
 const fetchBalance = async (
@@ -16,7 +17,7 @@ const fetchBalance = async (
 export const useAtaBalance = (
   owner?: PublicKey | null,
   tokenMint?: PublicKey | null
-) => {
+): SWRHookReturnType<TokenAmount> => {
   const { connection } = useConnection();
 
   const {
@@ -30,7 +31,7 @@ export const useAtaBalance = (
   );
 
   return {
-    balance,
+    data: balance,
     error,
     mutate,
     isValidating,

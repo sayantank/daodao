@@ -1,15 +1,15 @@
-import { BasicRealm } from "@lib";
+import { IRealm } from "lib/interfaces";
 import { createContext, useContext } from "react";
 
 type RealmContextType = {
-  realm: BasicRealm;
+  realm: IRealm;
 };
 
 export const RealmContext = createContext<RealmContextType | null>(null);
 
 type RealmProviderProps = {
   children: React.ReactNode;
-  realm?: BasicRealm;
+  realm?: IRealm;
 };
 
 export const RealmProvider = ({ realm, children }: RealmProviderProps) => {

@@ -1,4 +1,6 @@
 import { SolanaCluster, useSolana } from "@contexts/SolanaContext";
+import { RealmMeta } from "@lib";
+import { SWRHookReturnType } from "@utils/types";
 import { getDevnetRealms, getMainnetRealms } from "db/realms";
 import useSWR from "swr";
 
@@ -13,7 +15,7 @@ const fetcher = async (cluster: SolanaCluster) => {
   }
 };
 
-export const useClusterRealms = () => {
+export const useClusterRealms = (): SWRHookReturnType<RealmMeta[]> => {
   const { cluster } = useSolana();
 
   const { data, error, mutate, isValidating } = useSWR(
@@ -22,7 +24,7 @@ export const useClusterRealms = () => {
   );
 
   return {
-    realms: data,
+    data,
     isLoading: !error && !data,
     error,
     mutate,

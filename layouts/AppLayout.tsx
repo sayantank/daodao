@@ -8,7 +8,7 @@ type AppLayoutProps = {
 };
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const { realms, isLoading, error } = useClusterRealms();
+  const { data: realms, isLoading, error } = useClusterRealms();
 
   if (isLoading) return <div>Loading...</div>;
 
