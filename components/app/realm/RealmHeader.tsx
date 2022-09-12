@@ -4,6 +4,7 @@ import { prettifyPubkey } from "@utils/pubkey";
 import { LinkType, getExplorerLink } from "@utils/url";
 import { useSolana } from "@contexts/SolanaContext";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import SmallDotBadge from "@components/common/SmallDotBadge";
 
 const stats = [
   { label: "Vacation days left", value: 12 },
@@ -37,24 +38,33 @@ export default function RealmHeader() {
               <p className="text-xl font-semibold text-slate-200 sm:text-2xl">
                 {realm.name}
               </p>
-              <div className="flex items-center space-x-1 justify-center sm:justify-start">
-                <p className="text-sm text-slate-400">
-                  Community Token:{" "}
-                  {realm.communityMint.symbol
-                    ? realm.communityMint.symbol
-                    : prettifyPubkey(realm.communityMint.address)}
-                </p>
-                <a
-                  href={getExplorerLink(
-                    LinkType.Address,
-                    realm.communityMint.address.toBase58(),
-                    cluster
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              <div className="flex items-center space-x-2 justify-center sm:justify-start sm:pt-1">
+                <SmallDotBadge
+                  bg="bg-slate-700"
+                  textColor="text-slate-200"
+                  dotColor="text-slate-200"
                 >
-                  <ArrowTopRightOnSquareIcon className="h-4 w-4 text-slate-400" />
-                </a>
+                  V{realm.programVersion}
+                </SmallDotBadge>
+                <div className="flex items-center space-x-1">
+                  <p className="text-sm text-slate-400">
+                    Community Token:{" "}
+                    {realm.communityMint.symbol
+                      ? realm.communityMint.symbol
+                      : prettifyPubkey(realm.communityMint.address)}
+                  </p>
+                  <a
+                    href={getExplorerLink(
+                      LinkType.Address,
+                      realm.communityMint.address.toBase58(),
+                      cluster
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ArrowTopRightOnSquareIcon className="h-4 w-4 text-slate-400" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

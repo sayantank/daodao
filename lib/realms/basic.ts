@@ -12,9 +12,11 @@ import { IRealm } from "lib/interfaces";
 import { MintMeta } from "lib/types";
 import { LibError } from "lib/errors";
 import { getMintMeta } from "@utils/token";
+import { getGovernanceProgramVersion } from "@utils/version";
 
 export class BasicRealm implements IRealm {
   private _programId: PublicKey;
+  private _programVersion: number;
   private _account: ProgramAccount<Realm>;
   private _communityMintMeta: MintMeta;
   private _councilMintMeta: MintMeta | undefined;
@@ -22,12 +24,14 @@ export class BasicRealm implements IRealm {
 
   constructor(
     programId: PublicKey,
+    programVersion: number,
     account: ProgramAccount<Realm>,
     communityMintMeta: MintMeta,
     councilMintMeta?: MintMeta,
     imageUrl?: string
   ) {
     this._programId = programId;
+    this._programVersion = programVersion;
     this._account = account;
     this._communityMintMeta = communityMintMeta;
     this._councilMintMeta = councilMintMeta;
@@ -74,6 +78,10 @@ export class BasicRealm implements IRealm {
     return this._account.account.name;
   }
 
+  public get programVersion(): number {
+    return this._programVersion;
+  }
+
   static async load(
     connection: Connection,
     realmId: PublicKey,
@@ -81,6 +89,10 @@ export class BasicRealm implements IRealm {
     imageUrl?: string
   ): Promise<BasicRealm> {
     const realmAccount = await getRealm(connection, realmId);
+    const programVersion = await getGovernanceProgramVersion(
+      connection,
+      programId
+    );
 
     getMint;
     if (!arePubkeysEqual(realmAccount.owner, programId))
@@ -102,6 +114,7 @@ export class BasicRealm implements IRealm {
 
     return new BasicRealm(
       programId,
+      programVersion,
       realmAccount,
       communityMintMeta,
       councilMintMeta,

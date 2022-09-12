@@ -100,7 +100,7 @@ const AppNav = () => {
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-4 flex-shrink-0">
                     <div>
-                      <Menu.Button className="flex px-3 py-1 rounded-lg bg-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-700">
+                      <Menu.Button className="flex px-4 py-1 rounded-lg bg-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-700">
                         <span className="sr-only">Wallet Button</span>
                         <p className="text-lg font-medium text-slate-300">
                           {!connected

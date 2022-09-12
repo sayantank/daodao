@@ -11,6 +11,7 @@ export interface IRealm {
   imageUrl?: string;
   name: string;
   programId: PublicKey;
+  programVersion: number;
   account: ProgramAccount<Realm>;
   communityMint: MintMeta;
   councilMint?: MintMeta;
