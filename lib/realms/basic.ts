@@ -15,6 +15,8 @@ import { getMintMeta } from "@utils/token";
 import { getGovernanceProgramVersion } from "@utils/version";
 
 export class BasicRealm implements IRealm {
+  public readonly id = "basic";
+
   private _programId: PublicKey;
   private _programVersion: number;
   private _account: ProgramAccount<Realm>;

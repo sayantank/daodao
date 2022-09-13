@@ -11,6 +11,7 @@ export type RealmMeta = {
 
 export type MintMeta = {
   address: PublicKey;
+  decimals: number;
   mintAuthority: PublicKey | null;
   freezeAuthority: PublicKey | null;
   name?: string;

@@ -13,7 +13,10 @@ const fetchRealm = async (
   programId: PublicKey,
   imageUrl?: string
 ): Promise<IRealm> => {
-  return BasicRealm.load(connection, realmId, programId, imageUrl);
+  switch (realmId.toBase58()) {
+    default:
+      return BasicRealm.load(connection, realmId, programId, imageUrl);
+  }
 };
 
 /**

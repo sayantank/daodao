@@ -8,6 +8,7 @@ import BN from "bn.js";
 import { MintMeta } from "./types";
 
 export interface IRealm {
+  id: string;
   imageUrl?: string;
   name: string;
   programId: PublicKey;
