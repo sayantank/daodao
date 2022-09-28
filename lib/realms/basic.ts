@@ -14,7 +14,6 @@ import {
 import {
   createAssociatedTokenAccountInstruction,
   getAssociatedTokenAddressSync,
-  getMint,
 } from "@solana/spl-token";
 import { Connection, PublicKey, TransactionInstruction } from "@solana/web3.js";
 import BN from "bn.js";
@@ -140,7 +139,6 @@ export class BasicRealm implements IRealm {
       programId
     );
 
-    getMint;
     if (!arePubkeysEqual(realmAccount.owner, programId))
       throw new LibError(
         `programId: ${programId

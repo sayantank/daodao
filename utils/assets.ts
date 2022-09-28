@@ -142,12 +142,15 @@ export const getTokenAccountAssets = async (
       const data = Buffer.from(x.account.data[0], "base64");
       const account = AccountLayout.decode(data);
 
-      const governance =
-        nativeTreasuryAddresses[account.owner.toBase58()].governance ||
-        governanceAddresses[account.owner.toBase58()].governance;
+      const governance = nativeTreasuryAddresses[account.owner.toBase58()]
+        ? nativeTreasuryAddresses[account.owner.toBase58()].governance
+        : governanceAddresses[account.owner.toBase58()]
+        ? governanceAddresses[account.owner.toBase58()].governance
+        : null;
 
-      if (!governance)
+      if (!governance) {
         throw new Error("Governance not found for token account.");
+      }
 
       return {
         type: AssetType.TokenAccount,
