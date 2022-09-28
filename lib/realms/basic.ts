@@ -6,7 +6,6 @@ import {
   Proposal,
   Realm,
   getGovernanceAccounts,
-  getGovernanceProgramVersion,
   getRealm,
   pubkeyFilter,
   withDepositGoverningTokens,
@@ -27,6 +26,7 @@ import { compareProposals } from "@utils/proposal";
 import { accountsToPubkeyMap } from "@utils/accounts";
 import { getAllAssets } from "@utils/assets";
 import { getNativeTreasuries } from "@utils/governance";
+import { getGovernanceProgramVersion } from "@utils/version";
 
 export class BasicRealm implements IRealm {
   public readonly id = "basic";

@@ -48,7 +48,6 @@ export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
 
   // https://stackoverflow.com/questions/61751728/asynchronous-calls-with-react-usememo
   useEffect(() => {
-    console.log("useRealm");
     let active = true;
     loadIds();
     return () => {

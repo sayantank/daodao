@@ -4,12 +4,12 @@ import { prettifyPubkey } from "@utils/pubkey";
 import { LinkType, getExplorerLink } from "@utils/url";
 import { useSolana } from "@contexts/SolanaContext";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
-import SmallDotBadge from "@components/common/SmallDotBadge";
+import SmallBadge from "@components/common/SmallBadge";
 
 const stats = [
-  { label: "Vacation days left", value: 12 },
-  { label: "Sick days left", value: 4 },
-  { label: "Personal days left", value: 2 },
+  { label: "lorem ipsum", value: 12 },
+  { label: "lorem ipsum", value: 4 },
+  { label: "lorem ipsum", value: 2 },
 ];
 
 export default function RealmHeader() {
@@ -39,13 +39,12 @@ export default function RealmHeader() {
                 {realm.name}
               </p>
               <div className="flex items-center space-x-2 justify-center sm:justify-start sm:pt-1">
-                <SmallDotBadge
-                  bg="bg-slate-700"
-                  textColor="text-slate-200"
-                  dotColor="text-slate-200"
+                <SmallBadge
+                  dot="text-slate-200"
+                  style="bg-slate-700 text-slate-200"
                 >
                   V{realm.programVersion}
-                </SmallDotBadge>
+                </SmallBadge>
                 <div className="flex items-center space-x-1">
                   <p className="text-sm text-slate-400">
                     Community Token:{" "}
@@ -84,7 +83,6 @@ export default function RealmHeader() {
             key={stat.label}
             className="px-6 py-5 text-center text-sm font-medium"
           >
-            <span className="text-slate-200">{stat.value}</span>{" "}
             <span className="text-slate-400">{stat.label}</span>
           </div>
         ))}

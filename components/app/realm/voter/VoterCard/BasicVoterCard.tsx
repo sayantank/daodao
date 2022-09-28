@@ -43,6 +43,10 @@ export default function BasicVoterCard({
 
   if (!showEmpty && !balance?.uiAmount && !tokenOwnerRecord) return null;
 
+  if (!wallet.connected) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <div className="w-full animate-pulse h-40 bg-slate-800 rounded-lg" />

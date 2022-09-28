@@ -1,12 +1,19 @@
 import {
   Governance,
+  MintMaxVoteWeightSource,
+  MintMaxVoteWeightSourceType,
   ProgramAccount,
   Proposal,
   ProposalState,
+  VoteThresholdType,
 } from "@solana/spl-governance";
+import { Mint } from "@solana/spl-token";
+import BN from "bn.js";
+import { IRealm } from "lib/interfaces";
 import { IInstruction } from "lib/interfaces/instruction";
 import { TransferInstruction } from "lib/intstructions/transfer";
-import { DropdownOption } from "./types";
+import { arePubkeysEqual } from "./pubkey";
+import { ApprovalQuorumInfo, DropdownOption } from "./types";
 
 export const InitialFilters = {
   Cancelled: false,
@@ -20,6 +27,98 @@ export const InitialFilters = {
 };
 
 export type Filters = typeof InitialFilters;
+
+export const getGovernanceForProposal = (
+  proposal: Proposal,
+  governances: ProgramAccount<Governance>[]
+) => {
+  return governances.find(
+    (g) => g.pubkey.toBase58() === proposal.governance.toBase58()
+  );
+};
+
+export const getApprovalQuorum = (
+  proposal: Proposal,
+  governance: Governance,
+  realm: IRealm,
+  governingMint: Mint
+): ApprovalQuorumInfo => {
+  const isCommunityMint = arePubkeysEqual(
+    realm.communityMint.address,
+    governingMint.address
+  );
+
+  const maxVoterWeight = isCommunityMint
+    ? realm.account.account.config.communityMintMaxVoteWeightSource
+    : MintMaxVoteWeightSource.FULL_SUPPLY_FRACTION;
+
+  const votingThreshold = isCommunityMint
+    ? governance.config.communityVoteThreshold
+    : governance.config.councilVoteThreshold;
+
+  if (
+    votingThreshold.type !== VoteThresholdType.YesVotePercentage ||
+    !votingThreshold.value
+  )
+    throw new Error("Voting threshold not supported");
+
+  const yesVotes = proposal.getYesVoteCount();
+
+  let maxVotes: BN;
+  switch (maxVoterWeight.type) {
+    case MintMaxVoteWeightSourceType.SupplyFraction: {
+      const governingMintSupply = new BN(governingMint.supply.toString());
+      maxVotes = governingMintSupply
+        .mul(maxVoterWeight.value)
+        .div(MintMaxVoteWeightSource.FULL_SUPPLY_FRACTION.value);
+      break;
+    }
+    case MintMaxVoteWeightSourceType.Absolute: {
+      maxVotes = maxVoterWeight.value;
+      break;
+    }
+    default: {
+      throw new Error("Invalid ");
+    }
+  }
+
+  const quorum = maxVotes.muln(votingThreshold.value).divn(100);
+  const percentage = yesVotes.muln(100).div(maxVotes);
+
+  return {
+    quorum,
+    yesVotes,
+    maxVotes,
+    tokenDecimals: governingMint.decimals,
+    percentage: percentage.toNumber(),
+    quorumPercentage: votingThreshold.value,
+  };
+};
+
+export const getStateText = (state: ProposalState) => {
+  switch (state) {
+    case ProposalState.Draft:
+      return "Draft";
+    case ProposalState.SigningOff:
+      return "Signing Off";
+    case ProposalState.Voting:
+      return "Voting";
+    case ProposalState.Executing:
+      return "Executing";
+    case ProposalState.Completed:
+      return "Completed";
+    case ProposalState.Cancelled:
+      return "Cancelled";
+    case ProposalState.Defeated:
+      return "Defeated";
+    case ProposalState.ExecutingWithErrors:
+      return "Executing With Errors";
+    case ProposalState.Succeeded:
+      return "Succeeded";
+    default:
+      return "";
+  }
+};
 
 export const compareProposals = (
   p1: Proposal,
