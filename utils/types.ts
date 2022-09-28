@@ -7,3 +7,8 @@ export type SWRHookReturnType<T> = {
   isValidating: boolean;
   mutate: KeyedMutator<T>;
 };
+
+export type DropdownOption<T> = {
+  label: string;
+  value: T;
+};

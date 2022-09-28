@@ -1,8 +1,12 @@
 import { MintMeta } from "@lib";
 import { Metaplex } from "@metaplex-foundation/js";
-import { getMint } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID, getMint } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
+import axios from "axios";
 import BN from "bn.js";
+import { TOKEN_ACCOUNT_LAYOUT } from "./layouts";
+
+const tokenAccountOwnerOffset = 32;
 
 export const getMintMeta = async (
   connection: Connection,
@@ -142,3 +146,40 @@ export function divideBN(numerator: BN, denominator: BN): number {
 
   return num / den;
 }
+
+export const fetchTokenAccounts = (
+  connection: Connection,
+  addresses: string[]
+) =>
+  axios.request({
+    url: connection.rpcEndpoint,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify(
+      addresses.map((address) => ({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "getProgramAccounts",
+        params: [
+          TOKEN_PROGRAM_ID.toBase58(),
+          {
+            commitment: connection.commitment,
+            encoding: "base64",
+            filters: [
+              {
+                dataSize: TOKEN_ACCOUNT_LAYOUT.span, // number of bytes
+              },
+              {
+                memcmp: {
+                  offset: tokenAccountOwnerOffset, // number of bytes
+                  bytes: address, // base58 encoded string
+                },
+              },
+            ],
+          },
+        ],
+      }))
+    ),
+  });

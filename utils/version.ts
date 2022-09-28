@@ -26,7 +26,6 @@ export async function getGovernanceProgramVersion(
 ) {
   // Try get program metadata
   const programMetadataPk = await getProgramMetadataAddress(programId);
-  console.log(`programMetadataPk: ${programMetadataPk}`);
   try {
     const programMetadataInfo = await connection.getAccountInfo(
       programMetadataPk

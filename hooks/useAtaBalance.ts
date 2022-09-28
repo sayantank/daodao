@@ -27,7 +27,11 @@ export const useAtaBalance = (
     isValidating,
   } = useSWR(
     () => owner && tokenMint && [connection, owner, tokenMint, "balance"],
-    fetchBalance
+    fetchBalance,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+    }
   );
 
   return {

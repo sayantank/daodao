@@ -1,4 +1,6 @@
-import { PublicKey } from "@solana/web3.js";
+import { Governance, ProgramAccount } from "@solana/spl-governance";
+import { PublicKey, TransactionInstruction } from "@solana/web3.js";
+import BN from "bn.js";
 
 export type RealmMeta = {
   symbol: string;
@@ -16,4 +18,17 @@ export type MintMeta = {
   freezeAuthority: PublicKey | null;
   name?: string;
   symbol?: string;
+};
+
+export type InstructionSet = {
+  instructions: TransactionInstruction[];
+  preInstructions: TransactionInstruction[];
+  postInstructions: TransactionInstruction[];
+};
+
+export type NativeTreasury = {
+  address: PublicKey;
+  lamports: BN;
+  governance: ProgramAccount<Governance>;
+  programId: PublicKey;
 };

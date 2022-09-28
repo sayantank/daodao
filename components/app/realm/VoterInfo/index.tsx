@@ -1,12 +1,12 @@
 import { useRealmContext } from "@contexts/RealmContext";
-import BasicVoterCard from "./BasicVoterCard";
+import BasicVoterInfo from "./BasicVoterInfo";
 
-export default function VoterCard() {
+export default function VoterInfo() {
   const { realm } = useRealmContext();
 
   switch (realm.id) {
     case "basic": {
-      return <BasicVoterCard />;
+      return <BasicVoterInfo />;
     }
     default: {
       throw new Error("Unsupported realm");

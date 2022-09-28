@@ -1,9 +1,16 @@
 import { getRealmLayout } from "@layouts/RealmLayout";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import RealmHeader from "@components/app/realm/RealmHeader";
-import VoterCard from "@components/app/realm/VoterCard";
+import VoterInfo from "@components/app/realm/VoterInfo";
+import { useRealmContext } from "@contexts/RealmContext";
 
 export default function RealmScreen() {
+  const { realm } = useRealmContext();
+
+  useEffect(() => {
+    console.log(realm.assets);
+  }, [realm]);
+
   return (
     <div>
       <RealmHeader />
@@ -11,7 +18,7 @@ export default function RealmScreen() {
         <div className="flex-1 bg-red-200"></div>
         <div className="w-full lg:max-w-sm flex flex-col space-y-4">
           <div>
-            <VoterCard />
+            <VoterInfo />
           </div>
         </div>
       </div>
