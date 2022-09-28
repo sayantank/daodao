@@ -187,11 +187,13 @@ const AppNav = () => {
           {/* TODO: Change to Menu (Dropdown) and add Devnet toggle*/}
           <Disclosure.Panel className="lg:hidden">
             {connected ? (
-              <div className="px-3 pt-2 pb-3 border-b border-slate-800 text-slate-300">
-                <p className="text-sm font-light">Connected to</p>
-                <p className="font-semibold">
-                  {publicKey?.toBase58().slice(0, 12)}...
-                </p>
+              <div>
+                <div className="px-3 pt-2 pb-3 border-b border-slate-800 text-slate-300">
+                  <p className="text-sm font-light">Connected to</p>
+                  <p className="font-semibold">
+                    {publicKey?.toBase58().slice(0, 12)}...
+                  </p>
+                </div>
               </div>
             ) : null}
             <div className=" pt-4 pb-3">
@@ -217,12 +219,22 @@ const AppNav = () => {
                     </Disclosure.Button>
                   ))
                 ) : (
-                  <Disclosure.Button
-                    onClick={() => disconnect()}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-slate-600 hover:text-slate-100"
-                  >
-                    Disconnect
-                  </Disclosure.Button>
+                  <div className="flex w-full items-center justify-between">
+                    <div>
+                      <SwitchRightLabel
+                        enabled={isDevnet(cluster)}
+                        onChange={handleDevnetToggle}
+                      >
+                        <span className="text-slate-400">Devnet</span>
+                      </SwitchRightLabel>
+                    </div>
+                    <Disclosure.Button
+                      onClick={() => disconnect()}
+                      className="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-slate-600 hover:text-slate-100"
+                    >
+                      Disconnect
+                    </Disclosure.Button>
+                  </div>
                 )}
               </div>
             </div>
