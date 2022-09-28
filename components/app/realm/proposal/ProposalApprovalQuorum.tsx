@@ -31,7 +31,7 @@ export default function ProposalApprovalQuorum({
   const [tooltip, setTooltip] = useState(true);
 
   // TODO: Add loading state
-  if (!approvalQuorum) return <p>hello</p>;
+  if (!approvalQuorum) return null;
 
   return (
     <>
