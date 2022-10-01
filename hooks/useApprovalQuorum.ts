@@ -28,8 +28,6 @@ export const useApprovalQuorum = (
     if (mint && governance) {
       setQuorumInfo(getApprovalQuorum(proposal, governance, realm, mint));
     } else {
-      console.log(mint, governance);
-      console.log("haha");
       setQuorumInfo(null);
     }
   }, [mint, realm, proposal, governance]);

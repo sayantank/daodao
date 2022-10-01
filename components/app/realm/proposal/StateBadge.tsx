@@ -1,10 +1,26 @@
 import SmallBadge from "@components/common/SmallBadge";
+import { useRealmContext } from "@contexts/RealmContext";
 import { Proposal, ProposalState } from "@solana/spl-governance";
+import { getGovernanceForProposal } from "@utils/proposal";
+import { useMemo } from "react";
 
 type StateBadgeProps = {
   proposal: Proposal;
 };
 export default function StateBadge({ proposal }: StateBadgeProps) {
+  const { realm } = useRealmContext();
+  const governance = useMemo(
+    () => getGovernanceForProposal(proposal, realm.governances),
+    [realm.governances, proposal]
+  );
+  const isVotingOver = useMemo(() => {
+    return (
+      proposal.state === ProposalState.Voting &&
+      governance &&
+      proposal.getTimeToVoteEnd(governance.account)
+    );
+  }, [proposal, governance]);
+
   switch (proposal.state) {
     case ProposalState.Defeated:
       return (
@@ -34,9 +50,9 @@ export default function StateBadge({ proposal }: StateBadgeProps) {
       return (
         <SmallBadge
           style="text-purple-400 border border-purple-500"
-          dot="text-purple-500"
+          dot={!isVotingOver ? "text-purple-500" : undefined}
         >
-          Voting
+          {!isVotingOver ? "Voting" : "Voting Done"}
         </SmallBadge>
       );
     case ProposalState.SigningOff:

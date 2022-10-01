@@ -1,6 +1,5 @@
 import AppNav from "@components/common/AppNav";
-import { AppProvider } from "@contexts/AppContext";
-import { useClusterRealms } from "@hooks/useClusterRealms";
+import { useAppContext } from "@contexts/AppContext";
 import Head from "next/head";
 
 type AppLayoutProps = {
@@ -8,7 +7,7 @@ type AppLayoutProps = {
 };
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const { data: realms, isLoading, error } = useClusterRealms();
+  const { realms, error, isLoading } = useAppContext();
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -19,14 +18,12 @@ export function AppLayout({ children }: AppLayoutProps) {
       <Head>
         <title>DAO.DAO</title>
       </Head>
-      <AppProvider realms={realms}>
-        <div className="relative flex min-h-full flex-col">
-          <AppNav />
-          <div className="mx-auto w-full max-w-7xl p-2 sm:p-4 lg:p-8 ">
-            {children}
-          </div>
+      <div className="relative flex min-h-full flex-col">
+        <AppNav />
+        <div className="mx-auto w-full max-w-7xl p-2 sm:p-4 lg:p-8 ">
+          {children}
         </div>
-      </AppProvider>
+      </div>
     </>
   );
 }

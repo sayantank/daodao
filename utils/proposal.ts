@@ -11,7 +11,7 @@ import { Mint } from "@solana/spl-token";
 import BN from "bn.js";
 import { IRealm } from "lib/interfaces";
 import { IInstruction } from "lib/interfaces/instruction";
-import { TransferInstruction } from "lib/intstructions/transfer";
+import { TransferInstruction } from "lib/instructions/transfer";
 import { arePubkeysEqual } from "./pubkey";
 import { ApprovalQuorumInfo, DropdownOption } from "./types";
 
@@ -83,15 +83,21 @@ export const getApprovalQuorum = (
   }
 
   const quorum = maxVotes.muln(votingThreshold.value).divn(100);
-  const percentage = yesVotes.muln(100).div(maxVotes);
+  const percentage = yesVotes.muln(100).div(maxVotes).toNumber();
+
+  const currentQuorumPercentage = Math.min(
+    Math.floor((100 * percentage) / votingThreshold.value),
+    100
+  );
 
   return {
     quorum,
     yesVotes,
     maxVotes,
     tokenDecimals: governingMint.decimals,
-    percentage: percentage.toNumber(),
+    percentage: percentage,
     quorumPercentage: votingThreshold.value,
+    currentQuorumPercentage,
   };
 };
 

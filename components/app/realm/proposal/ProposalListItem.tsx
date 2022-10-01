@@ -6,7 +6,7 @@ import {
   ProposalState,
 } from "@solana/spl-governance";
 import { timeSince } from "@utils/helpers";
-import { getStateText } from "@utils/proposal";
+import { getGovernanceForProposal, getStateText } from "@utils/proposal";
 import { useMemo } from "react";
 import ProposalApprovalQuorum from "./ProposalApprovalQuorum";
 import ProposalVoting from "./ProposalVoting";
@@ -17,6 +17,11 @@ type ProposalListItemProps = {
 };
 export default function ProposalListItem({ proposal }: ProposalListItemProps) {
   const { realm } = useRealmContext();
+
+  const governance = useMemo(
+    () => getGovernanceForProposal(proposal.account, realm.governances),
+    [realm.governances, proposal]
+  );
 
   return (
     <div className="bg-slate-700 rounded-md border border-slate-600 py-2 px-2 lg:px-4 space-y-2">
@@ -64,7 +69,7 @@ function ProposalVotingDescription({ proposal }: { proposal: Proposal }) {
 
   const timeLeftToVote = useProposalTimer(realm, proposal);
 
-  if (!isVoting) return null;
+  if (!isVoting || timeLeftToVote.seconds < 0) return null;
 
   return (
     <div className="text-slate-400 text-sm">

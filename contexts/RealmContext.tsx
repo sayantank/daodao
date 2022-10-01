@@ -1,8 +1,13 @@
+import { useRealm } from "@hooks/useRealm";
 import { IRealm } from "lib/interfaces";
-import { createContext, useContext } from "react";
+import { useRouter } from "next/router";
+import { createContext, useContext, useEffect } from "react";
 
 type RealmContextType = {
-  realm: IRealm;
+  realm?: IRealm;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any;
+  isLoading: boolean;
 };
 
 export const RealmContext = createContext<RealmContextType | null>(null);
@@ -12,11 +17,22 @@ type RealmProviderProps = {
   realm?: IRealm;
 };
 
-export const RealmProvider = ({ realm, children }: RealmProviderProps) => {
-  if (!realm) throw new Error("Invalid realm provided to RealmProvider");
+export const RealmProvider = ({ children }: RealmProviderProps) => {
+  const router = useRouter();
+  const { realm: realmQuery } = router.query;
+
+  const { data: realm, error, isLoading } = useRealm(realmQuery as string);
+
+  useEffect(() => {
+    console.log(realmQuery);
+  }, [realmQuery]);
+
+  // if (!realm) throw new Error("Invalid realm provided to RealmProvider");
 
   return (
-    <RealmContext.Provider value={{ realm }}>{children}</RealmContext.Provider>
+    <RealmContext.Provider value={{ realm, error, isLoading }}>
+      {children}
+    </RealmContext.Provider>
   );
 };
 

@@ -1,6 +1,7 @@
 import { Governance, ProgramAccount } from "@solana/spl-governance";
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 import BN from "bn.js";
+import { Assets } from "./interfaces";
 
 export type RealmMeta = {
   symbol: string;
@@ -31,4 +32,10 @@ export type NativeTreasury = {
   lamports: BN;
   governance: ProgramAccount<Governance>;
   programId: PublicKey;
+};
+
+export type RealmWalletType = {
+  governance: ProgramAccount<Governance>;
+  nativeTreasury: NativeTreasury;
+  assets: Assets;
 };

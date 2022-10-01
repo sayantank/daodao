@@ -8,6 +8,8 @@ import { TOKEN_ACCOUNT_LAYOUT } from "./layouts";
 
 const tokenAccountOwnerOffset = 32;
 
+export const SOL_DECIMALS = 9;
+
 export const getMintMeta = async (
   connection: Connection,
   mint: PublicKey
@@ -91,7 +93,7 @@ export function prettifyDecimal(num: number, decimalPlaces: number): string {
     return decimalPlaces === 0 ? "0" : `0.${"0".repeat(decimalPlaces)}`;
   }
 
-  if (num < 0.01) return "<0.01";
+  if (num < 0.01) return "< 0.01";
 
   if (num >= 1e9) return `${roundDown(num / 1e9, decimalPlaces)}B`;
 

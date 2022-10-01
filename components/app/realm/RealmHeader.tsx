@@ -80,7 +80,7 @@ export default function RealmHeader() {
       <div className="grid grid-cols-1 divide-y divide-slate-600 border-t border-slate-600 bg-slate-700 sm:grid-cols-3 sm:divide-y-0 sm:divide-x ">
         {stats.map((stat) => (
           <div
-            key={stat.label}
+            key={stat.label + "-" + stat.value}
             className="px-6 py-5 text-center text-sm font-medium"
           >
             <span className="text-slate-400">{stat.label}</span>

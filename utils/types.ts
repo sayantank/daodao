@@ -27,6 +27,14 @@ export type TimeDelta = {
   seconds: number;
 };
 
+/**
+ * @param quorum no of atomic tokens required to reach quorum
+ * @param quorumPercentage percentage of yes votes required to pass
+ * @param maxVotes maximum number of atomic tokens that can vote
+ * @param yesVotes number of atomic tokens that voted yes
+ * @param tokenDecimals number of decimals in the governing token
+ * @param percentage percentage of yes votes / max votes
+ */
 export type ApprovalQuorumInfo = {
   quorum: BN;
   quorumPercentage: number;
@@ -34,4 +42,10 @@ export type ApprovalQuorumInfo = {
   yesVotes: BN;
   percentage: number;
   tokenDecimals: number;
+  currentQuorumPercentage: number;
 };
+
+export enum TokenOwnerRecordAction {
+  Deposit = "deposit",
+  Withdraw = "withdraw",
+}

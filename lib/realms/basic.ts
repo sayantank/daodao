@@ -21,12 +21,19 @@ import { getMintMeta } from "@utils/token";
 import { LibError } from "lib/errors";
 import { Assets } from "lib/interfaces/asset";
 import { IRealm } from "lib/interfaces/realm";
-import { InstructionSet, MintMeta, NativeTreasury } from "lib/types";
+import {
+  InstructionSet,
+  MintMeta,
+  NativeTreasury,
+  RealmWalletType,
+} from "lib/types";
 import { compareProposals } from "@utils/proposal";
 import { accountsToPubkeyMap } from "@utils/accounts";
 import { getAllAssets } from "@utils/assets";
 import { getNativeTreasuries } from "@utils/governance";
 import { getGovernanceProgramVersion } from "@utils/version";
+import BasicTreasurySummaryCard from "@components/app/realm/treasury/TreasurySummaryCard/BasicTreasurySummaryCard";
+import BasicVoterInfo from "@components/app/realm/voter/VoterInfo/BasicVoterInfo";
 
 export class BasicRealm implements IRealm {
   public readonly id = "basic";
@@ -42,6 +49,9 @@ export class BasicRealm implements IRealm {
   private _proposals: ProgramAccount<Proposal>[] = [];
   private _nativeTreasuries: NativeTreasury[] = [];
   private _assets: Assets;
+
+  private treasurySummaryCard: () => JSX.Element | null;
+  private _voterInfo: () => JSX.Element | null;
 
   constructor(
     programId: PublicKey,
@@ -65,10 +75,17 @@ export class BasicRealm implements IRealm {
     this._proposals = proposals;
     this._nativeTreasuries = nativeTreasuries;
     this._assets = assets;
+
+    this.treasurySummaryCard = BasicTreasurySummaryCard;
+    this._voterInfo = BasicVoterInfo;
   }
 
   public get programId(): PublicKey {
     return this._programId;
+  }
+
+  public get address(): PublicKey {
+    return this._account.pubkey;
   }
 
   public get account(): ProgramAccount<Realm> {
@@ -125,6 +142,14 @@ export class BasicRealm implements IRealm {
 
   public get assets(): Assets {
     return this._assets;
+  }
+
+  public get TreasurySummaryCard(): () => JSX.Element | null {
+    return this.treasurySummaryCard;
+  }
+
+  public get VoterInfo(): () => JSX.Element | null {
+    return this._voterInfo;
   }
 
   static async load(
@@ -201,6 +226,37 @@ export class BasicRealm implements IRealm {
       councilMintMeta,
       imageUrl
     );
+  }
+
+  public getRealmWallets(): Record<string, RealmWalletType> {
+    const realmWallets: Record<string, RealmWalletType> = {};
+    this.nativeTreasuries.forEach((n) => {
+      realmWallets[n.governance.pubkey.toBase58()] = {
+        governance: n.governance,
+        nativeTreasury: n,
+        assets: {
+          mintAssets: [],
+          tokenAccountAssets: [],
+          programAssets: [],
+        },
+      };
+    });
+
+    this.assets.mintAssets.forEach((a) =>
+      realmWallets[a.governance.pubkey.toBase58()].assets.mintAssets.push(a)
+    );
+
+    this.assets.tokenAccountAssets.forEach((a) =>
+      realmWallets[
+        a.governance.pubkey.toBase58()
+      ].assets.tokenAccountAssets.push(a)
+    );
+
+    this.assets.programAssets.forEach((a) =>
+      realmWallets[a.governance.pubkey.toBase58()].assets.programAssets.push(a)
+    );
+
+    return realmWallets;
   }
 
   //TODO: implement

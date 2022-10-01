@@ -1,12 +1,30 @@
 import TokenOwnerRecordActionModal from "@components/modals/TokenOwnerRecordActionModal";
 import { useRealmContext } from "@contexts/RealmContext";
+import { MintMeta } from "@lib";
+import { TokenOwnerRecordAction } from "@utils/types";
 import { useState } from "react";
 import BasicVoterCard from "../VoterCard/BasicVoterCard";
 
 export default function BasicVoterInfo() {
   const { realm } = useRealmContext();
 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [actionMint, setActionMint] = useState<MintMeta | undefined>(undefined);
+  const [actionType, setActionType] = useState<TokenOwnerRecordAction | null>(
+    null
+  );
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setActionMint(undefined);
+    setActionType(null);
+  };
+
+  const handleOpenModal = (mint: MintMeta, action: TokenOwnerRecordAction) => {
+    setIsModalOpen(true);
+    setActionMint(mint);
+    setActionType(action);
+  };
 
   return (
     <>
@@ -14,8 +32,15 @@ export default function BasicVoterInfo() {
         <BasicVoterCard
           showEmpty
           label={"Community Votes"}
-          onDeposit={() => setModalOpen(true)}
-          onWithdraw={() => setModalOpen(true)}
+          onDeposit={() =>
+            handleOpenModal(realm.communityMint, TokenOwnerRecordAction.Deposit)
+          }
+          onWithdraw={() =>
+            handleOpenModal(
+              realm.communityMint,
+              TokenOwnerRecordAction.Withdraw
+            )
+          }
           mint={realm.communityMint.address}
         />
         {/* <BasicVoterCard
@@ -27,7 +52,9 @@ export default function BasicVoterInfo() {
       </div>
       <TokenOwnerRecordActionModal
         isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={handleCloseModal}
+        action={actionType}
+        mint={actionMint}
       />
     </>
   );

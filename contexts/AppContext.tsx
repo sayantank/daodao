@@ -1,8 +1,12 @@
+import { useClusterRealms } from "@hooks/useClusterRealms";
 import { RealmMeta } from "@lib";
 import { createContext, useContext } from "react";
 
 type AppContextType = {
-  realms: RealmMeta[];
+  realms?: RealmMeta[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any;
+  isLoading: boolean;
 };
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -12,11 +16,13 @@ type AppProviderProps = {
   realms?: RealmMeta[];
 };
 
-export const AppProvider = ({ children, realms }: AppProviderProps) => {
-  if (!realms) throw new Error("Invalid realms provided to AppProvider");
+export const AppProvider = ({ children }: AppProviderProps) => {
+  const { data: realms, isLoading, error } = useClusterRealms();
 
   return (
-    <AppContext.Provider value={{ realms }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ realms, error, isLoading }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 

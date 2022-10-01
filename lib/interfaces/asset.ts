@@ -1,4 +1,5 @@
 import { Governance, ProgramAccount } from "@solana/spl-governance";
+import { Mint } from "@solana/spl-token";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 
@@ -25,7 +26,7 @@ export interface ProgramAssetType extends BaseAssetType {}
 export interface TokenAccountAssetType extends BaseAssetType {
   owner: PublicKey;
   balance: BN;
-  mint: PublicKey;
+  mint: Mint;
 }
 
 export type Assets = {

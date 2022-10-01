@@ -4,7 +4,7 @@ import {
   ProgramAccount,
   getNativeTreasuryAddress,
 } from "@solana/spl-governance";
-import { AccountLayout } from "@solana/spl-token";
+import { AccountLayout, Mint, getMint } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 import {
@@ -136,11 +136,19 @@ export const getTokenAccountAssets = async (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]).then(([g, n]) => g.data.concat(n.data))) as any[];
 
-  const tokenAccountAssets = [...rawTokenAccounts.flatMap((x) => x.result)].map(
-    (x) => {
+  const mintCache: Record<string, Mint> = {};
+
+  const tokenAccountAssets = Promise.all(
+    [...rawTokenAccounts.flatMap((x) => x.result)].map(async (x) => {
       const publicKey = new PublicKey(x.pubkey);
       const data = Buffer.from(x.account.data[0], "base64");
       const account = AccountLayout.decode(data);
+
+      let mint: Mint;
+      if (!mintCache[account.mint.toBase58()]) {
+        mint = await getMint(connection, account.mint, "recent");
+        mintCache[account.mint.toBase58()] = mint;
+      } else mint = mintCache[account.mint.toBase58()];
 
       const governance = nativeTreasuryAddresses[account.owner.toBase58()]
         ? nativeTreasuryAddresses[account.owner.toBase58()].governance
@@ -158,9 +166,9 @@ export const getTokenAccountAssets = async (
         governance,
         owner: account.owner,
         balance: new BN(account.amount.toString()),
-        mint: account.mint,
+        mint: mint,
       };
-    }
+    })
   );
 
   return tokenAccountAssets;

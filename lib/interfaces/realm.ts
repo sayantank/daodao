@@ -7,13 +7,19 @@ import {
 } from "@solana/spl-governance";
 import { Connection, PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
-import { InstructionSet, MintMeta, NativeTreasury } from "../types";
+import {
+  InstructionSet,
+  MintMeta,
+  NativeTreasury,
+  RealmWalletType,
+} from "../types";
 import { Assets } from "./asset";
 
 export interface IRealm {
   id: string;
   imageUrl?: string;
   name: string;
+  address: PublicKey;
   programId: PublicKey;
   programVersion: number;
   account: ProgramAccount<Realm>;
@@ -27,6 +33,11 @@ export interface IRealm {
   proposals: ProgramAccount<Proposal>[];
   nativeTreasuries: NativeTreasury[];
   assets: Assets;
+
+  TreasurySummaryCard: () => JSX.Element | null;
+  VoterInfo: () => JSX.Element | null;
+
+  getRealmWallets(): Record<string, RealmWalletType>;
 
   canCreateProposal(
     owner: PublicKey,

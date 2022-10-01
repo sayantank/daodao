@@ -1,11 +1,11 @@
-import { SolanaCluster, useSolana } from "@contexts/SolanaContext";
+import { ClusterType, useSolana } from "@contexts/SolanaContext";
 import { RealmMeta } from "@lib";
 import { SWRHookReturnType } from "@utils/types";
 import { getDevnetRealms, getMainnetRealms } from "db/realms";
 import useSWR from "swr";
 
-const fetcher = async (cluster: SolanaCluster) => {
-  switch (cluster.network) {
+const fetcher = async (network: ClusterType) => {
+  switch (network) {
     case "mainnet-beta":
       return getMainnetRealms();
     case "devnet":
@@ -19,11 +19,10 @@ export const useClusterRealms = (): SWRHookReturnType<RealmMeta[]> => {
   const { cluster } = useSolana();
 
   const { data, error, mutate, isValidating } = useSWR(
-    () => [cluster, "realms"],
+    () => [cluster.network, "realms"],
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateIfStale: false,
     }
   );
 

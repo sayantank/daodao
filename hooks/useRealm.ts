@@ -8,14 +8,18 @@ import { IRealm } from "lib/interfaces";
 import { SWRHookReturnType } from "@utils/types";
 
 const fetchRealm = async (
-  connection: Connection,
-  realmId: PublicKey,
-  programId: PublicKey,
+  rpcEndpoint: string,
+  realmId: string,
+  programId: string,
   imageUrl?: string
 ): Promise<IRealm> => {
-  switch (realmId.toBase58()) {
+  const connection = new Connection(rpcEndpoint);
+  const realmPubkey = new PublicKey(realmId);
+  const programPubkey = new PublicKey(programId);
+
+  switch (realmPubkey.toBase58()) {
     default:
-      return BasicRealm.load(connection, realmId, programId, imageUrl);
+      return BasicRealm.load(connection, realmPubkey, programPubkey, imageUrl);
   }
 };
 
@@ -37,12 +41,18 @@ export const useRealm = (realmQuery: string): SWRHookReturnType<IRealm> => {
     isValidating,
   } = useSWR(
     () =>
+      realmQuery &&
       realmId &&
-      programId && [connection, realmId, programId, imageUrl, "realm"],
+      programId && [
+        connection.rpcEndpoint,
+        realmId.toString(),
+        programId.toString(),
+        imageUrl,
+        "realm",
+      ],
     fetchRealm,
     {
       revalidateOnFocus: false,
-      revalidateIfStale: false,
     }
   );
 

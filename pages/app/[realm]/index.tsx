@@ -1,10 +1,16 @@
-import { getRealmLayout } from "@layouts/RealmLayout";
 import { ReactNode } from "react";
 import RealmHeader from "@components/app/realm/RealmHeader";
-import VoterInfo from "@components/app/realm/voter/VoterInfo";
 import ProposalList from "@components/app/realm/proposal/ProposalList";
+import { useRealmContext } from "@contexts/RealmContext";
+import { getAppLayout } from "@layouts/AppLayout";
 
 export default function RealmScreen() {
+  const { realm, isLoading, error } = useRealmContext();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+  if (!realm) return null;
+
   return (
     <div>
       <RealmHeader />
@@ -14,7 +20,10 @@ export default function RealmScreen() {
         </div>
         <div className="w-full lg:max-w-sm flex flex-col space-y-4">
           <div>
-            <VoterInfo />
+            <realm.VoterInfo />
+          </div>
+          <div>
+            <realm.TreasurySummaryCard />
           </div>
         </div>
       </div>
@@ -22,4 +31,4 @@ export default function RealmScreen() {
   );
 }
 
-RealmScreen.getLayout = (page: ReactNode) => getRealmLayout(page);
+RealmScreen.getLayout = (page: ReactNode) => getAppLayout(page);

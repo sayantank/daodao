@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
-import { RealmProvider } from "@contexts/RealmContext";
-import { useRealm } from "@hooks/useRealm";
+import { RealmProvider, useRealmContext } from "@contexts/RealmContext";
 import { AppLayout } from "./AppLayout";
 
 type RealmLayoutProps = {
@@ -8,13 +6,10 @@ type RealmLayoutProps = {
 };
 
 function RealmLayout({ children }: RealmLayoutProps) {
-  const router = useRouter();
-  const { realm: realmQuery } = router.query;
-
-  const { data: realm, error, isLoading } = useRealm(realmQuery as string);
+  const { realm, isLoading, error } = useRealmContext();
 
   // TODO: Handle Loading state
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loadingohohoho...</div>;
 
   // TODO: Handle Error stat, can redirect to 404 or home
   if (error) return <div>{JSON.stringify(error)}</div>;

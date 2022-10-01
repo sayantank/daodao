@@ -2,6 +2,8 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { FC } from "react";
 import { SolanaProvider } from "@contexts/SolanaContext";
+import { RealmProvider } from "@contexts/RealmContext";
+import { AppProvider } from "@contexts/AppContext";
 
 // Use require instead of import since order matters
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -22,7 +24,11 @@ const App: FC<AppPropsWithLayout> = ({
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <SolanaProvider>{getLayout(<Component {...pageProps} />)}</SolanaProvider>
+    <SolanaProvider>
+      <AppProvider>
+        <RealmProvider>{getLayout(<Component {...pageProps} />)}</RealmProvider>
+      </AppProvider>
+    </SolanaProvider>
   );
 };
 

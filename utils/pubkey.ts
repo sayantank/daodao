@@ -15,3 +15,12 @@ export function arePubkeysEqual(a: PublicKey, b: PublicKey): boolean {
 export function prettifyPubkey(key: PublicKey, length = 6) {
   return `${key.toBase58().slice(0, length)}...`;
 }
+
+export function isPubkey(value: string | PublicKey): value is PublicKey {
+  try {
+    new PublicKey(value as string);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}

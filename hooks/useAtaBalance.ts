@@ -5,11 +5,19 @@ import { SWRHookReturnType } from "@utils/types";
 import useSWR from "swr";
 
 const fetchBalance = async (
-  connection: Connection,
-  owner: PublicKey,
-  tokenMint: PublicKey
+  rpcEndpoint: string,
+  owner: string,
+  tokenMint: string
 ) => {
-  const ata = await getAssociatedTokenAddressSync(tokenMint, owner, true);
+  const connection = new Connection(rpcEndpoint);
+  const ownerPubkey = new PublicKey(owner);
+  const tokenMintPubkey = new PublicKey(tokenMint);
+
+  const ata = await getAssociatedTokenAddressSync(
+    tokenMintPubkey,
+    ownerPubkey,
+    true
+  );
   const response = await connection.getTokenAccountBalance(ata, "confirmed");
   return response.value;
 };
@@ -26,11 +34,17 @@ export const useAtaBalance = (
     mutate,
     isValidating,
   } = useSWR(
-    () => owner && tokenMint && [connection, owner, tokenMint, "balance"],
+    () =>
+      owner &&
+      tokenMint && [
+        connection.rpcEndpoint,
+        owner.toBase58(),
+        tokenMint.toBase58(),
+        "balance",
+      ],
     fetchBalance,
     {
       revalidateOnFocus: false,
-      revalidateIfStale: false,
     }
   );
 

@@ -1,4 +1,3 @@
-import { BasicRealm } from "@lib";
 import {
   ProgramAccount,
   TokenOwnerRecord,
@@ -12,16 +11,23 @@ import { IRealm } from "lib/interfaces";
 import useSWR from "swr";
 
 const fetchTokenOwnerRecord = async (
-  connection: Connection,
-  realm: BasicRealm,
-  tokenMint: PublicKey,
-  owner: PublicKey
+  rpcEndpoint: string,
+  realm: string,
+  programId: string,
+  tokenMint: string,
+  owner: string
 ) => {
+  const connection = new Connection(rpcEndpoint);
+  const realmPubkey = new PublicKey(realm);
+  const programPubkey = new PublicKey(programId);
+  const tokenMintPubkey = new PublicKey(tokenMint);
+  const ownerPubkey = new PublicKey(owner);
+
   const account = await getTokenOwnerRecordAddress(
-    realm.programId,
-    realm.account.pubkey,
-    tokenMint,
-    owner
+    programPubkey,
+    realmPubkey,
+    tokenMintPubkey,
+    ownerPubkey
   );
   return getTokenOwnerRecord(connection, account);
 };
@@ -41,9 +47,15 @@ export const useTokenOwnerRecord = (
   } = useSWR(
     () =>
       tokenMint &&
-      owner && [connection, realm, tokenMint, owner, "token-owner-record"],
-    fetchTokenOwnerRecord,
-    { revalidateIfStale: false }
+      owner && [
+        connection.rpcEndpoint,
+        realm.address.toBase58(),
+        realm.programId.toBase58(),
+        tokenMint.toBase58(),
+        owner.toBase58(),
+        "token-owner-record",
+      ],
+    fetchTokenOwnerRecord
   );
 
   return {

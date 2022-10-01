@@ -1,3 +1,4 @@
+import SmallBadge from "@components/common/SmallBadge";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useApprovalQuorum } from "@hooks/useApprovalQuorum";
 import { Proposal } from "@solana/spl-governance";
@@ -44,7 +45,7 @@ export default function ProposalApprovalQuorum({
               onMouseEnter={() => setTooltip(true)}
               onMouseLeave={() => {
                 setTooltip(false);
-                setTimeout(() => setTooltip(true), 50);
+                setTimeout(() => setTooltip(true), 500);
               }}
               className="text-slate-400 h-5 w-5"
             />
@@ -52,7 +53,7 @@ export default function ProposalApprovalQuorum({
           <div className="flex w-full items-center justify-between -mt-0.5">
             <div className="flex space-x-1 items-baseline">
               <p className="text-lg font-semibold text-slate-300">
-                {approvalQuorum.percentage} / {approvalQuorum.quorumPercentage}%
+                {approvalQuorum.currentQuorumPercentage}%
               </p>
             </div>
             <div>
@@ -67,18 +68,23 @@ export default function ProposalApprovalQuorum({
                   <span>yes votes remaining</span>
                 </p>
               ) : (
-                <p>Quorum Reached</p>
+                <SmallBadge
+                  dot="text-cyan-400"
+                  style="text-cyan-400 font-semibold mb-1"
+                >
+                  Quorum Reached
+                </SmallBadge>
               )}
             </div>
           </div>
         </div>
         <div className="h-2 w-full rounded-full overflow-hidden bg-slate-600">
           <div
-            className={`w-[${approvalQuorum.percentage}%] h-full bg-cyan-400`}
+            className={`w-[${approvalQuorum.currentQuorumPercentage}%] h-full bg-cyan-400`}
           />
         </div>
       </div>
-      {tooltip && <ReactTooltip delayHide={200} />}
+      {tooltip && <ReactTooltip />}
     </>
   );
 }
