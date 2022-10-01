@@ -16,6 +16,8 @@ export default function RealmHeader() {
   const { cluster } = useSolana();
   const { realm } = useRealmContext();
 
+  if (!realm) return null;
+
   return (
     <div className="overflow-hidden rounded-lg bg-slate-800 shadow">
       <div className="bg-slate-800 p-6">

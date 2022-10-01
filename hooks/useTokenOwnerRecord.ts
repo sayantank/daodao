@@ -33,7 +33,7 @@ const fetchTokenOwnerRecord = async (
 };
 
 export const useTokenOwnerRecord = (
-  realm: IRealm,
+  realm?: IRealm,
   tokenMint?: PublicKey | null,
   owner?: PublicKey | null
 ): SWRHookReturnType<ProgramAccount<TokenOwnerRecord>> => {
@@ -46,6 +46,7 @@ export const useTokenOwnerRecord = (
     isValidating,
   } = useSWR(
     () =>
+      realm &&
       tokenMint &&
       owner && [
         connection.rpcEndpoint,

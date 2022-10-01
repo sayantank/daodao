@@ -4,6 +4,7 @@ import { useRealmContext } from "@contexts/RealmContext";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAtaBalance } from "@hooks/useAtaBalance";
+import { useTokenOwnerRecord } from "@hooks/useTokenOwnerRecord";
 import { MintMeta } from "@lib";
 import { BN_ZERO } from "@solana/spl-governance";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -39,9 +40,16 @@ export default function TokenOwnerRecordActionModal({
   const isCommunityMint =
     mint && arePubkeysEqual(mint.address, realm!.communityMint.address);
 
-  const { data: balance, isLoading: balanceLoading } = useAtaBalance(
-    wallet.publicKey,
-    mint?.address
+  const {
+    data: balance,
+    isLoading: balanceLoading,
+    mutate: balanceMutate,
+  } = useAtaBalance(wallet.publicKey, mint?.address);
+
+  const { mutate: tokenOwnerMutate } = useTokenOwnerRecord(
+    realm,
+    mint?.address,
+    wallet.publicKey
   );
 
   const { handleSubmit, control, setValue } =
@@ -65,6 +73,11 @@ export default function TokenOwnerRecordActionModal({
       );
 
       const txSig = await sendWalletTransaction(connection, tx, wallet);
+      await connection.confirmTransaction(txSig);
+
+      await Promise.all([balanceMutate(), tokenOwnerMutate()]);
+
+      onClose();
 
       console.log(txSig);
     } catch (e) {

@@ -9,10 +9,13 @@ type StateBadgeProps = {
 };
 export default function StateBadge({ proposal }: StateBadgeProps) {
   const { realm } = useRealmContext();
+
   const governance = useMemo(
-    () => getGovernanceForProposal(proposal, realm.governances),
-    [realm.governances, proposal]
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    () => getGovernanceForProposal(proposal, realm!.governances),
+    [realm, proposal]
   );
+
   const isVotingOver = useMemo(() => {
     return (
       proposal.state === ProposalState.Voting &&

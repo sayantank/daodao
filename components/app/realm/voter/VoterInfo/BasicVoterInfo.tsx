@@ -26,6 +26,8 @@ export default function BasicVoterInfo() {
     setActionType(action);
   };
 
+  if (!realm) return null;
+
   return (
     <>
       <div className="space-y-4">

@@ -6,7 +6,8 @@ export default function BasicTreasuryCard() {
   const { realm } = useRealmContext();
 
   const realmWallets = useMemo(() => {
-    return realm.getRealmWallets();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return realm!.getRealmWallets();
   }, [realm]);
 
   return (

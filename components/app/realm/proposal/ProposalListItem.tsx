@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useRealmContext } from "@contexts/RealmContext";
 import useProposalTimer from "@hooks/useProposalTimer";
 import {
@@ -6,7 +7,7 @@ import {
   ProposalState,
 } from "@solana/spl-governance";
 import { timeSince } from "@utils/helpers";
-import { getGovernanceForProposal, getStateText } from "@utils/proposal";
+import { getStateText } from "@utils/proposal";
 import { useMemo } from "react";
 import ProposalApprovalQuorum from "./ProposalApprovalQuorum";
 import ProposalVoting from "./ProposalVoting";
@@ -18,10 +19,7 @@ type ProposalListItemProps = {
 export default function ProposalListItem({ proposal }: ProposalListItemProps) {
   const { realm } = useRealmContext();
 
-  const governance = useMemo(
-    () => getGovernanceForProposal(proposal.account, realm.governances),
-    [realm.governances, proposal]
-  );
+  if (!realm) return null;
 
   return (
     <div className="bg-slate-700 rounded-md border border-slate-600 py-2 px-2 lg:px-4 space-y-2">
@@ -67,7 +65,7 @@ function ProposalVotingDescription({ proposal }: { proposal: Proposal }) {
     [proposal]
   );
 
-  const timeLeftToVote = useProposalTimer(realm, proposal);
+  const timeLeftToVote = useProposalTimer(realm!, proposal);
 
   if (!isVoting || timeLeftToVote.seconds < 0) return null;
 

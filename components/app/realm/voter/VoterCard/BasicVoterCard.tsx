@@ -39,13 +39,9 @@ export default function BasicVoterCard({
 
   const isLoading = tokenOwnerRecordLoading || balanceLoading;
 
-  if (!mint) return null;
+  if (!mint || !realm || !wallet.connected) return null;
 
   if (!showEmpty && !balance?.uiAmount && !tokenOwnerRecord) return null;
-
-  if (!wallet.connected) {
-    return null;
-  }
 
   if (isLoading) {
     return (
