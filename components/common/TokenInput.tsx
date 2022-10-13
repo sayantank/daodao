@@ -1,6 +1,5 @@
 import { MintMeta } from "@lib";
 import { BN_ZERO } from "@solana/spl-governance";
-import { TokenAmount } from "@solana/web3.js";
 import { tokenAtomicsToDecimal, tokenDecimalsToAtomics } from "@utils/token";
 import BN from "bn.js";
 import { useEffect, useState } from "react";
@@ -9,9 +8,10 @@ type TokenInputProps = {
   value: BN;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: (...event: any[]) => void;
-  balance?: TokenAmount;
+  balance?: BN;
   onMax: () => void;
   mint: MintMeta;
+  label?: string;
 };
 export default function TokenInput({
   value,
@@ -19,29 +19,30 @@ export default function TokenInput({
   balance,
   onMax,
   mint,
+  label = "Amount",
 }: TokenInputProps) {
   const [decimalValue, setDecimalValue] = useState(
     tokenAtomicsToDecimal(value, mint.decimals).toString()
   );
 
   useEffect(() => {
-    setDecimalValue(
-      tokenAtomicsToDecimal(value, balance ? balance.decimals : 0).toString()
-    );
-  }, [value, balance]);
+    setDecimalValue(tokenAtomicsToDecimal(value, mint.decimals).toString());
+  }, [value, mint]);
 
   if (!balance) return null;
 
   return (
-    <div className="rounded-md overflow-hidden p-1">
+    <div className="rounded-md overflow-hidden">
       <div className="flex w-full items-center justify-between text-slate-400 mb-0.5">
-        <p className="text-xs">Amount</p>
+        <p className="block text-sm font-medium text-slate-400">{label}</p>
         <p className="text-xs">
           Balance:{" "}
-          <span className="text-slate-300">{balance?.uiAmount || 0}</span>
+          <span className="text-slate-300">
+            {tokenAtomicsToDecimal(balance, mint.decimals)}
+          </span>
         </p>
       </div>
-      <div className="relative px-2 py-1 w-full border border-slate-600 bg-slate-700  text-slate-300 rounded-md flex space-x-2 items-center">
+      <div className="relative px-3 py-2 w-full border border-slate-600 bg-slate-700  text-slate-300 rounded-md flex space-x-2 items-center">
         <input
           type="text"
           value={decimalValue}
@@ -60,7 +61,7 @@ export default function TokenInput({
               setDecimalValue(targetValue.toString());
             }
           }}
-          className="block w-full flex-1 bg-transparent  placeholder-gray-500 focus:ring-0 text-lg focus:outline-none focus:ring-none"
+          className="block w-full flex-1 bg-transparent  placeholder-gray-500 focus:ring-0 text-lg focus:outline-none focus:ring-none  sm:text-sm"
         />
         <button
           disabled={!balance}

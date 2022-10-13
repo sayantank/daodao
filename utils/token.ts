@@ -9,6 +9,14 @@ import { TOKEN_ACCOUNT_LAYOUT } from "./layouts";
 const tokenAccountOwnerOffset = 32;
 
 export const SOL_DECIMALS = 9;
+export const SOL_MINT_META: MintMeta = {
+  address: new PublicKey("So11111111111111111111111111111111111111112"),
+  decimals: SOL_DECIMALS,
+  mintAuthority: null,
+  freezeAuthority: null,
+  name: "Solana",
+  symbol: "SOL",
+};
 
 export const getMintMeta = async (
   connection: Connection,

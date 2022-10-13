@@ -25,9 +25,9 @@ export default function ButtonLeftIcon({
       type="button"
       onClick={onClick}
       className={classNames(
+        getButtonStyle(type),
         className || "",
-        "inline-flex items-center rounded-md border shadow-sm border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all disabled:opacity-40",
-        getButtonStyle(type)
+        "inline-flex items-center rounded-md border shadow-sm border-transparent leading-4 px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all disabled:opacity-40"
       )}
       disabled={disabled}
     >

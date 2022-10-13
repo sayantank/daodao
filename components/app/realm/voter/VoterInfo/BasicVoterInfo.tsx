@@ -20,10 +20,12 @@ export default function BasicVoterInfo() {
     setActionType(null);
   };
 
-  const handleOpenModal = (mint: MintMeta, action: TokenOwnerRecordAction) => {
-    setIsModalOpen(true);
-    setActionMint(mint);
-    setActionType(action);
+  const handleOpenModal = (action: TokenOwnerRecordAction, mint?: MintMeta) => {
+    if (mint) {
+      setIsModalOpen(true);
+      setActionMint(mint);
+      setActionType(action);
+    }
   };
 
   if (!realm) return null;
@@ -35,22 +37,26 @@ export default function BasicVoterInfo() {
           showEmpty
           label={"Community Votes"}
           onDeposit={() =>
-            handleOpenModal(realm.communityMint, TokenOwnerRecordAction.Deposit)
+            handleOpenModal(TokenOwnerRecordAction.Deposit, realm.communityMint)
           }
           onWithdraw={() =>
             handleOpenModal(
-              realm.communityMint,
-              TokenOwnerRecordAction.Withdraw
+              TokenOwnerRecordAction.Withdraw,
+              realm.communityMint
             )
           }
           mint={realm.communityMint.address}
         />
-        {/* <BasicVoterCard
-        onDeposit={handleCommunityDeposit}
-        onWithdraw={handleCommunityDeposit}
-        label={"Council Votes"}
-        mint={realm.councilMint?.address}
-      /> */}
+        <BasicVoterCard
+          onDeposit={() =>
+            handleOpenModal(TokenOwnerRecordAction.Deposit, realm.councilMint)
+          }
+          onWithdraw={() =>
+            handleOpenModal(TokenOwnerRecordAction.Withdraw, realm.councilMint)
+          }
+          label={"Council Votes"}
+          mint={realm.councilMint?.address}
+        />
       </div>
       <TokenOwnerRecordActionModal
         isOpen={isModalOpen}

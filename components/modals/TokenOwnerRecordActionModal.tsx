@@ -146,7 +146,7 @@ export default function TokenOwnerRecordActionModal({
                             <TokenInput
                               value={value}
                               onChange={onChange}
-                              balance={balance}
+                              balance={new BN(balance?.amount ?? 0)}
                               mint={mint}
                               onMax={() =>
                                 setValue(

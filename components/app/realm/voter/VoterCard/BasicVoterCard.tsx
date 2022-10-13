@@ -68,7 +68,7 @@ export default function BasicVoterCard({
           {tokenOwnerRecord
             ? tokenAtomicsToPrettyDecimal(
                 tokenOwnerRecord.account.governingTokenDepositAmount,
-                realm.communityMint.decimals
+                balance ? balance.decimals : 0
               )
             : 0}
           <span className="text-sm font-medium ml-1">votes</span>

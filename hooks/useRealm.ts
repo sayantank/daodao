@@ -6,6 +6,7 @@ import { BasicRealm } from "@lib";
 import { useAppContext } from "@contexts/AppContext";
 import { IRealm } from "lib/interfaces";
 import { SWRHookReturnType } from "@utils/types";
+import { SerumRealm } from "lib/realms/serum";
 
 const fetchRealm = async (
   rpcEndpoint: string,
@@ -17,7 +18,11 @@ const fetchRealm = async (
   const realmPubkey = new PublicKey(realmId);
   const programPubkey = new PublicKey(programId);
 
+  console.log("realmPubkey", realmPubkey.toBase58());
+
   switch (realmPubkey.toBase58()) {
+    case "3pFLtCJzoewv9aB4JZDhGdRb4xQeJRtVpd66QgpNTDwP":
+      return SerumRealm.load(connection, realmPubkey, programPubkey, imageUrl);
     default:
       return BasicRealm.load(connection, realmPubkey, programPubkey, imageUrl);
   }

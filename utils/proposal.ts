@@ -11,9 +11,9 @@ import { Mint } from "@solana/spl-token";
 import BN from "bn.js";
 import { IRealm } from "lib/interfaces";
 import { IInstruction } from "lib/interfaces/instruction";
-import { TransferInstruction } from "lib/instructions/transfer";
 import { arePubkeysEqual } from "./pubkey";
 import { ApprovalQuorumInfo, DropdownOption } from "./types";
+import { RealmInstructions } from "lib/instructions";
 
 export const InitialFilters = {
   Cancelled: false,
@@ -231,12 +231,10 @@ export const filterProposals = (
 };
 
 export function getInstructions(): DropdownOption<IInstruction>[] {
-  return [
-    {
-      label: "Transfer",
-      value: new TransferInstruction(),
-    },
-  ];
+  return RealmInstructions.map((i) => ({
+    label: i.label,
+    value: i,
+  }));
 }
 
 function getVotingStateRank(

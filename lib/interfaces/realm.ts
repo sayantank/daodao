@@ -16,7 +16,7 @@ import {
 import { Assets } from "./asset";
 
 export interface IRealm {
-  id: string;
+  // id: string;
   imageUrl?: string;
   name: string;
   address: PublicKey;
@@ -37,12 +37,14 @@ export interface IRealm {
   TreasurySummaryCard: () => JSX.Element | null;
   VoterInfo: () => JSX.Element | null;
 
+  testMember: string;
+
   getRealmWallets(): Record<string, RealmWalletType>;
 
-  canCreateProposal(
-    owner: PublicKey,
-    governance: ProgramAccount<Governance>
-  ): boolean;
+  // canCreateProposal(
+  //   owner: PublicKey,
+  //   governance: ProgramAccount<Governance>
+  // ): boolean;
 
   getDepositCommunityTokenInstructions(
     connection: Connection,

@@ -36,7 +36,7 @@ import BasicTreasurySummaryCard from "@components/app/realm/treasury/TreasurySum
 import BasicVoterInfo from "@components/app/realm/voter/VoterInfo/BasicVoterInfo";
 
 export class BasicRealm implements IRealm {
-  public readonly id = "basic";
+  // readonly id = "basic";
 
   private _programId: PublicKey;
   private _programVersion: number;
@@ -50,8 +50,10 @@ export class BasicRealm implements IRealm {
   private _nativeTreasuries: NativeTreasury[] = [];
   private _assets: Assets;
 
-  private treasurySummaryCard: () => JSX.Element | null;
-  private _voterInfo: () => JSX.Element | null;
+  readonly TreasurySummaryCard = BasicTreasurySummaryCard;
+  readonly VoterInfo = BasicVoterInfo;
+
+  readonly testMember: string = "basic realm";
 
   constructor(
     programId: PublicKey,
@@ -75,9 +77,6 @@ export class BasicRealm implements IRealm {
     this._proposals = proposals;
     this._nativeTreasuries = nativeTreasuries;
     this._assets = assets;
-
-    this.treasurySummaryCard = BasicTreasurySummaryCard;
-    this._voterInfo = BasicVoterInfo;
   }
 
   public get programId(): PublicKey {
@@ -144,14 +143,6 @@ export class BasicRealm implements IRealm {
     return this._assets;
   }
 
-  public get TreasurySummaryCard(): () => JSX.Element | null {
-    return this.treasurySummaryCard;
-  }
-
-  public get VoterInfo(): () => JSX.Element | null {
-    return this._voterInfo;
-  }
-
   static async load(
     connection: Connection,
     realmId: PublicKey,
@@ -159,6 +150,7 @@ export class BasicRealm implements IRealm {
     imageUrl?: string
   ): Promise<BasicRealm> {
     const realmAccount = await getRealm(connection, realmId);
+    console.log("PROGRAM ID", programId.toBase58());
     const programVersion = await getGovernanceProgramVersion(
       connection,
       programId
@@ -259,14 +251,19 @@ export class BasicRealm implements IRealm {
     return realmWallets;
   }
 
-  //TODO: implement
-  public canCreateProposal(
-    owner: PublicKey,
-    governance?: ProgramAccount<Governance>
-  ): boolean {
-    if (!governance) return false;
-    return true;
-  }
+  // //TODO: implement
+  // public async canCreateProposal(
+  //   connection: Connection,
+  //   owner: PublicKey,
+  //   governance?: ProgramAccount<Governance>
+  // ): Promise< {
+  //   if (!governance) return false;
+
+  //   getTokenOwnerRecord()
+  //   governance.account.config.minCommunityTokensToCreateProposal
+
+  //   return true;
+  // }
 
   public async getDepositCommunityTokenInstructions(
     connection: Connection,

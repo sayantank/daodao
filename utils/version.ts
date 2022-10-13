@@ -72,7 +72,7 @@ export async function getGovernanceProgramVersion(
       "ENmcpFCpxN1CqyUjuog9yyUVfdXBKF3LVCwLr7grJZpk"
     );
 
-    await withUpdateProgramMetadata(instructions, programId, 2, walletPk);
+    await withUpdateProgramMetadata(instructions, programId, 3, walletPk);
 
     const transaction = new Transaction({ feePayer: walletPk });
     transaction.add(...instructions);
@@ -99,7 +99,7 @@ export async function getGovernanceProgramVersion(
       }
     }
   } catch (ex) {
-    console.log("Can't determine program version", ex);
+    console.error("Can't determine program version\n", ex);
   }
 
   // If we can't determine the version using the program instance and running localnet then use the latest version
